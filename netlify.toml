@@ -1,6 +1,5 @@
 # Netlify-Konfiguration für den Creator-Empire-Prototyp.
-# Site in Netlify mit "Base directory" = creator-empire anlegen (falls das Repo noch 321.live ist),
-# oder ohne Base directory, sobald creator-empire ein eigenes Repo ist.
+# Site in Netlify aus diesem Repo anlegen, Base directory leer lassen.
 [build]
   command = "bash prototype/build.sh"
   publish = "prototype/dist"

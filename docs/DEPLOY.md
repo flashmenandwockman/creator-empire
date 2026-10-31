@@ -26,10 +26,8 @@ Ergebnis: `https://creator-empire-proto.netlify.app`. Jeder neue Stand: Build-Sk
 ### Variante B: automatisch aus GitHub
 
 1. Netlify → Add new site → Import from Git → Repo wählen.
-2. Solange der Ordner im Repo `321.live` liegt: **Base directory** `creator-empire`, Branch
-   `claude/magical-brown-9fur2z`. Build command und Publish directory kommen aus `netlify.toml`.
-3. Sobald `creator-empire` ein eigenes Repo ist: Base directory leer lassen, Branch `main`.
-4. Jeder Push baut und deployt. Deploy Previews für Pull Requests gibt es automatisch.
+2. Repo `creator-empire`, Branch `main`, Base directory leer. Build command und Publish directory kommen aus `netlify.toml`.
+3. Jeder Push baut und deployt. Deploy Previews für Pull Requests gibt es automatisch.
 
 ### Optional: unter 321.live erreichbar machen
 

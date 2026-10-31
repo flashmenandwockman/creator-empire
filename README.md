@@ -21,22 +21,16 @@ asynchrone Challenges. Arbeitsname, Marken- und Domainrecherche steht noch aus.
 | [docs/phase-0/](docs/phase-0/) | Interviewleitfaden, Namenscheck, Tracking, Datenkonzept der Phase 0 |
 | [docs/DEPLOY.md](docs/DEPLOY.md) | Prototyp auf Netlify bringen, später Supabase und das volle Spiel |
 
-## Warum liegt das hier?
+## Setup
 
-Dieses Verzeichnis ist als eigenständiges Projekt gedacht. Die GitHub-Integration der
-Session durfte kein neues Repository anlegen, deshalb liegt der Projektstart vorerst
-im Repo `321.live` auf einem Feature-Branch. Verschieben in ein eigenes Repo:
+Reines Dokumentations- und Prototyp-Repo, kein Build nötig. Prototyp lokal ansehen:
 
 ```bash
-git subtree split --prefix=creator-empire -b creator-empire-only
+bash prototype/build.sh && npx serve prototype/dist
 ```
 
-```bash
-git push git@github.com:flashmenandwockman/creator-empire.git creator-empire-only:main
-```
-
-Anschließend den Ordner hier löschen. Das Repo `321.live` soll laut dessen README nur
-die Website enthalten; `netlify deploy --dir .` würde den Ordner sonst mit hochladen.
+Deployment siehe [docs/DEPLOY.md](docs/DEPLOY.md). Produktcode (Phase A) entsteht nach bestandener
+Phase 0 in diesem Repo nach den Regeln in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) und [AGENTS.md](AGENTS.md).
 
 ## Nächster Schritt
 
