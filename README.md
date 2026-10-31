@@ -5,7 +5,7 @@ Spieler entwickeln fiktive Content Creator vom Newcomer zum virtuellen Star: zei
 Produktionen (Echtzeit-Timer), Studio-Ausbau, Skills, virtuelle Brand-Verträge und
 asynchrone Challenges. Arbeitsname, Marken- und Domainrecherche steht noch aus.
 
-**Status:** Konzept / Strategiephase. Noch kein Code.
+**Status:** Phase 0 (Validierung). Klickprototyp fertig, Interviews offen. Noch kein Produktcode.
 
 ## Dokumente
 
@@ -17,6 +17,8 @@ asynchrone Challenges. Arbeitsname, Marken- und Domainrecherche steht noch aus.
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Verbindliche Architekturentscheidungen für Phase A und B |
 | [docs/ECONOMY.md](docs/ECONOMY.md) | Startwerte der Spielökonomie und Regeln für Balancing-Änderungen |
 | [AGENTS.md](AGENTS.md) | Arbeitsregeln für Coding-Agenten (Claude Code, Cursor, Codex) |
+| [prototype/index.html](prototype/index.html) | Klickprototyp Phase 0 (eine Datei, kein Build). Live: https://claude.ai/artifact/K6wMyGvMkDzzJK25nXi5cV |
+| [docs/phase-0/](docs/phase-0/) | Interviewleitfaden, Namenscheck, Tracking der Phase 0 |
 
 ## Warum liegt das hier?
 

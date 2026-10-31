@@ -1,0 +1,604 @@
+<title>Creator Empire Prototyp</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@500&display=swap">
+<style>
+/* Layout: One-screen mobile app. Sticky resource bar, scrollable view, bottom tab nav.
+   Dark-first by design (GDD 7.1: dunkle Oberfläche, warme Neon-Akzente). Single theme by choice. */
+:root{
+  --bg:#0e0f14; --panel:#171922; --panel-2:#1f2230; --line:#2b2f40;
+  --fg:#f1efe8; --muted:#9a9db0; --accent:#ff7a3d; --accent-2:#ffd166; --good:#4cd98a; --warn:#ffb648; --bad:#ff5c6c;
+  --display:"Syne",ui-sans-serif,system-ui,sans-serif; --body:"DM Sans",ui-sans-serif,system-ui,sans-serif; --mono:"DM Mono",ui-monospace,monospace;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.45;display:flex;flex-direction:column}
+*{box-sizing:border-box}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:1.6rem;font-weight:800}
+h2{font-size:1.15rem;font-weight:700}
+h3{font-size:1rem;font-weight:700}
+p{margin:0}
+.muted{color:var(--muted)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.gutter{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* Top bar */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--panel)}
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--panel);border-bottom:1px solid var(--line);padding-block:10px}
+.topbar .row{display:flex;gap:10px;align-items:center;max-width:720px;margin:0 auto}
+.brand{font-family:var(--display);font-weight:800;font-size:.95rem;letter-spacing:.02em;color:var(--accent-2);margin-right:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.res{display:flex;align-items:center;gap:6px;background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:.85rem;white-space:nowrap;flex:none}
+@media (max-width:480px){.brand{font-size:0;width:28px;height:28px;border-radius:8px;background:var(--accent);flex:none}.brand::after{content:"CE";font-size:.75rem;color:#1a0d05;display:grid;place-items:center;height:100%}.res{font-size:.78rem;padding:3px 8px}}
+.res b{font-family:var(--mono);font-weight:500;font-variant-numeric:tabular-nums}
+.res .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.res.f .dot{background:var(--good)}
+.xpbar{height:4px;background:var(--panel-2);border-radius:2px;overflow:hidden;max-width:720px;margin:8px auto 0}
+.xpbar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0;transition:width .4s}
+
+/* Main */
+main{flex:1;overflow-y:auto;padding-block:16px 24px}
+.wrap{max-width:720px;margin:0 auto;display:grid;gap:16px}
+.view[hidden]{display:none}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:12px;min-width:0}
+.card.hi{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kv{display:grid;gap:2px}
+.kv b{font-family:var(--mono);font-weight:500;font-size:1.05rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:10px;background:var(--accent);color:#1a0d05;font-weight:600;transition:transform .08s}
+.btn:active{transform:scale(.98)}
+.btn.sec{background:var(--panel-2);color:var(--fg);border:1px solid var(--line)}
+.btn.ghost{background:none;color:var(--muted);padding:8px 10px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.block{width:100%}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:999px;font-size:.75rem;font-weight:600;background:var(--panel-2);border:1px solid var(--line)}
+.pill.good{color:var(--good);border-color:color-mix(in srgb,var(--good) 40%,transparent)}
+.pill.warn{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 40%,transparent)}
+.pill.bad{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 40%,transparent)}
+.pill.acc{color:var(--accent-2);border-color:color-mix(in srgb,var(--accent-2) 40%,transparent)}
+
+/* Studio scene */
+.scene{position:relative;background:radial-gradient(120% 90% at 50% 0%,#232638 0%,#12141c 70%);border:1px solid var(--line);border-radius:14px;overflow:hidden;aspect-ratio:16/10;max-width:100%}
+.scene svg{width:100%;height:100%;display:block}
+.scene .stage{position:absolute;left:12px;top:12px}
+.station{cursor:pointer}
+.station:hover .glow,.station:focus-visible .glow{opacity:.9}
+.glow{opacity:0;transition:opacity .2s}
+.busy .glow{opacity:.7;animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25}}
+.hint{font-size:.8rem;color:var(--muted)}
+
+/* Options */
+.opts{display:grid;gap:8px}
+.opt{display:grid;grid-template-columns:1fr auto;gap:4px 12px;text-align:left;padding:12px 14px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line);width:100%}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,var(--panel-2))}
+.opt.locked{opacity:.5}
+.opt .t{font-weight:600}
+.opt .s{font-size:.8rem;color:var(--muted);grid-column:1/-1}
+.opt .r{font-family:var(--mono);font-size:.85rem;color:var(--accent-2);align-self:start}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1;min-width:90px;padding:10px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line);font-weight:600;font-size:.85rem}
+.seg button[aria-pressed="true"]{border-color:var(--accent-2);color:var(--accent-2)}
+.forecast{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.forecast b{display:block;font-family:var(--mono);font-weight:500;font-size:1.05rem}
+.band{position:relative;height:8px;border-radius:4px;background:var(--panel-2);overflow:hidden}
+.band i{position:absolute;top:0;bottom:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:4px}
+
+/* Queue */
+.timer{font-family:var(--mono);font-size:2rem;font-weight:500;letter-spacing:.02em}
+.prog{height:10px;background:var(--panel-2);border-radius:5px;overflow:hidden}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0;transition:width 1s linear}
+.toggle{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line)}
+.sw{position:relative;width:44px;height:26px;border-radius:13px;background:var(--line);flex:none;transition:background .2s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--fg);transition:transform .2s}
+.sw[aria-checked="true"]{background:var(--good)}
+.sw[aria-checked="true"]::after{transform:translateX(18px)}
+
+/* Result overlay */
+.overlay{position:fixed;inset:0;background:rgba(8,9,14,.82);display:grid;place-items:center;z-index:20;padding:max(16px,env(safe-area-inset-left,0px))}
+.overlay[hidden]{display:none}
+.result{background:var(--panel);border:1px solid var(--accent);border-radius:18px;padding:22px;max-width:420px;width:100%;display:grid;gap:14px;animation:pop .35s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes pop{from{transform:scale(.85);opacity:0}}
+.score{font-family:var(--display);font-size:3.2rem;font-weight:800;line-height:1;color:var(--accent-2)}
+.gain{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.gain b{display:block;font-family:var(--mono);font-weight:500;font-size:1.2rem;color:var(--good)}
+.gain span{font-size:.75rem;color:var(--muted)}
+canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:21}
+
+/* Log */
+.log{font-family:var(--mono);font-size:.78rem;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;max-height:220px;overflow:auto;white-space:pre-wrap;word-break:break-word}
+textarea,input[type=text]{width:100%;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;color:var(--fg);padding:10px 12px;font:inherit}
+.scale{display:flex;gap:6px}
+.scale button{flex:1;padding:10px 0;border-radius:8px;background:var(--panel-2);border:1px solid var(--line);font-family:var(--mono)}
+.scale button[aria-pressed="true"]{border-color:var(--accent-2);color:var(--accent-2)}
+
+/* Bottom nav */
+nav{position:sticky;bottom:0;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav .row{display:flex;max-width:720px;margin:0 auto}
+nav button{flex:1;padding:10px 4px 8px;display:grid;gap:3px;justify-items:center;font-size:.72rem;font-weight:600;color:var(--muted);position:relative}
+nav button[aria-current="page"]{color:var(--accent-2)}
+nav button .ic{font-size:1.15rem;line-height:1}
+nav button .badge{position:absolute;top:6px;right:calc(50% - 20px);width:8px;height:8px;border-radius:50%;background:var(--good)}
+.toast{position:fixed;left:50%;bottom:calc(72px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.85rem;z-index:15;max-width:90vw;animation:fade 2.6s forwards}
+@keyframes fade{0%,80%{opacity:1}100%{opacity:0}}
+.notice{font-size:.78rem;color:var(--muted);border-left:3px solid var(--line);padding-left:10px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header class="topbar gutter">
+  <div class="row">
+    <span class="brand">CREATOR EMPIRE</span>
+    <span class="res" title="Credits"><span class="dot"></span><b id="rCredits">500</b> Cr</span>
+    <span class="res f" title="Follower"><span class="dot"></span><b id="rFollowers">0</b></span>
+    <span class="res" title="Level"><b id="rLevel">Lv 1</b></span>
+  </div>
+  <div class="xpbar" aria-hidden="true"><i id="xpFill"></i></div>
+</header>
+
+<main class="gutter">
+<div class="wrap">
+
+<!-- Onboarding -->
+<section class="view" id="v-onboard">
+  <div class="card">
+    <span class="label">Prototyp · Phase 0</span>
+    <h1>Dein erster Creator</h1>
+    <p class="muted">Du startest mit einem Schlafzimmerstudio, 500 Credits und einer Idee. Baue daraus ein Medien-Imperium. Alles hier ist fiktiv: Creator, Marken, Follower.</p>
+    <label class="label" for="cName">Creator-Name</label>
+    <input type="text" id="cName" maxlength="24" placeholder="z. B. Lumi, Kaya, Jonte" autocomplete="off">
+    <span class="label">Nische</span>
+    <div class="opts" id="archetypes"></div>
+    <button class="btn block" id="btnStart">Studio betreten</button>
+    <p class="notice">Timer sind im Prototyp stark verkürzt: 4 Stunden Echtzeit entsprechen 45 Sekunden. Im fertigen Spiel läuft eine Produktion weiter, wenn du die App schließt. Das tut sie hier auch: schließe die Seite ruhig und komm zurück.</p>
+  </div>
+</section>
+
+<!-- Studio -->
+<section class="view" id="v-studio" hidden>
+  <div class="scene" id="scene">
+    <span class="pill acc stage" id="stageLabel">Bedroom</span>
+  </div>
+  <p class="hint" id="sceneHint">Tippe auf eine Station, um dort zu produzieren.</p>
+  <div class="card" id="queueCard"></div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap">
+      <h2 id="creatorName">Creator</h2><span class="pill" id="creatorNiche">Nische</span>
+    </div>
+    <div class="grid2" id="attrs"></div>
+  </div>
+  <div class="card" id="upgradeCard"></div>
+</section>
+
+<!-- Content -->
+<section class="view" id="v-content" hidden>
+  <div class="card">
+    <span class="label">Content Studio</span>
+    <h2>Was produzierst du?</h2>
+    <div class="opts" id="kinds"></div>
+  </div>
+  <div class="card">
+    <span class="label">Strategie</span>
+    <div class="seg" id="strategies"></div>
+    <p class="muted" id="stratDesc"></p>
+  </div>
+  <div class="card hi">
+    <span class="label">Prognose</span>
+    <div class="forecast">
+      <div><span class="label">Dauer</span><b id="fDur">–</b></div>
+      <div><span class="label">Kosten</span><b id="fCost">–</b></div>
+      <div><span class="label">XP</span><b id="fXp">–</b></div>
+    </div>
+    <div>
+      <div style="display:flex;justify-content:space-between" class="muted"><span>Follower-Bandbreite</span><b class="mono" id="fFollow">–</b></div>
+      <div class="band" style="margin-top:6px"><i id="fBand" style="left:20%;right:30%"></i></div>
+    </div>
+    <p class="muted" style="font-size:.8rem">Keine Garantie. Der Server würfelt mit festem Seed innerhalb dieser Spanne.</p>
+    <button class="btn block" id="btnProduce">Produktion starten</button>
+    <p class="muted" id="produceWhy" style="font-size:.8rem"></p>
+  </div>
+</section>
+
+<!-- Contracts -->
+<section class="view" id="v-contracts" hidden>
+  <div class="card">
+    <span class="label">Vertragsmarkt</span>
+    <h2>Fiktive Brand-Verträge</h2>
+    <p class="muted">Alle Marken sind erfunden. Ein Vertrag ist ein Reel mit Briefing: mehr Credits und Reputation, aber nur, wenn du die Voraussetzungen erfüllst.</p>
+  </div>
+  <div id="contracts" style="display:grid;gap:12px"></div>
+</section>
+
+<!-- Test -->
+<section class="view" id="v-test" hidden>
+  <div class="card">
+    <span class="label">Phase 0 · Testprotokoll</span>
+    <h2>Für das Interview</h2>
+    <p class="muted">Alles, was du im Prototyp tust, landet hier. Am Ende drei Fragen, dann kopieren und in die Interview-Notiz einfügen.</p>
+    <div class="log" id="log"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn sec" id="btnCopyLog">Protokoll kopieren</button>
+      <button class="btn ghost" id="btnReset">Prototyp zurücksetzen</button>
+    </div>
+  </div>
+  <div class="card">
+    <h3>1. Würdest du das morgen wieder öffnen?</h3>
+    <div class="scale" data-q="reopen"><button>1</button><button>2</button><button>3</button><button>4</button><button>5</button></div>
+    <p class="muted" style="font-size:.8rem">1 = sicher nicht · 5 = sicher ja</p>
+    <h3>2. Erkläre in einem Satz, wie das Spiel funktioniert.</h3>
+    <textarea id="qLoop" rows="2" placeholder="Ich produziere Content, warte, bekomme Follower und kaufe davon…"></textarea>
+    <h3>3. Wofür würdest du Geld ausgeben?</h3>
+    <div class="seg" data-q="pay">
+      <button>Nichts</button><button>Outfits / Studio-Deko</button><button>Schnellere Timer</button><button>Weiß nicht</button>
+    </div>
+    <h3>4. Interessieren dich echte Brand-Events im Spiel?</h3>
+    <div class="scale" data-q="events"><button>1</button><button>2</button><button>3</button><button>4</button><button>5</button></div>
+    <button class="btn block" id="btnSubmit">Antworten ins Protokoll</button>
+  </div>
+</section>
+
+</div>
+</main>
+
+<nav aria-label="Hauptnavigation">
+  <div class="row">
+    <button data-view="studio" aria-current="page"><span class="ic">🏠</span>Studio</button>
+    <button data-view="content"><span class="ic">🎬</span>Content</button>
+    <button data-view="contracts"><span class="ic">🤝</span>Verträge</button>
+    <button data-view="test"><span class="ic">📋</span>Test</button>
+  </div>
+</nav>
+
+<div class="overlay" id="overlay" hidden>
+  <div class="result" role="dialog" aria-modal="true" aria-labelledby="resTitle">
+    <span class="label" id="resKind">Reel fertig</span>
+    <h2 id="resTitle">Dein Content ist live</h2>
+    <div><span class="label">Score</span><div class="score" id="resScore">0</div></div>
+    <div class="gain">
+      <div><b id="gFollow">+0</b><span>Follower</span></div>
+      <div><b id="gXp">+0</b><span>XP</span></div>
+      <div><b id="gCred">+0</b><span>Credits</span></div>
+    </div>
+    <p class="muted" id="resNote"></p>
+    <button class="btn block" id="btnCloseRes">Weiter</button>
+  </div>
+</div>
+<canvas class="confetti" id="confetti" hidden></canvas>
+
+<script>
+(function(){
+"use strict";
+/* ---------- Economy (aus docs/ECONOMY.md) ---------- */
+const TIME_SCALE = 240*60*1000 / 45000; // 4h -> 45s
+const KINDS = {
+  story:  {name:"Story",          base:30,  cost:40,  xp:30,  followers:90,   credits:60,  minLevel:1, station:"phone"},
+  reel:   {name:"Reel",           base:240, cost:180, xp:150, followers:850,  credits:260, minLevel:1, station:"camera"},
+  live:   {name:"Livestream",     base:360, cost:300, xp:250, followers:1250, credits:420, minLevel:5, station:"desk"},
+  longf:  {name:"Longform-Video", base:720, cost:550, xp:450, followers:2500, credits:800, minLevel:8, station:"edit"},
+  free:   {name:"Spontan-Story",  base:20,  cost:0,   xp:15,  followers:40,   credits:30,  minLevel:1, station:"phone", free:true},
+};
+const STRATS = {
+  safe:     {name:"Sicher",      bonus:0, variance:8,  desc:"Kleiner Bonus, kleine Schwankung. Planbar."},
+  balanced: {name:"Ausgewogen", bonus:3, variance:11, desc:"Mittlerer Bonus, mittlere Schwankung."},
+  viral:    {name:"Viral",      bonus:6, variance:15, desc:"Hoher Bonus, aber kann auch schiefgehen."},
+};
+const ARCHETYPES = {
+  gaming:  {name:"Gaming",  reach:55, engagement:65, creativity:50, production:45, brandFit:40, trait:"experimentell"},
+  fitness: {name:"Fitness", reach:50, engagement:55, creativity:45, production:60, brandFit:60, trait:"zuverlässig"},
+  fashion: {name:"Fashion", reach:60, engagement:50, creativity:65, production:40, brandFit:55, trait:"stilsicher"},
+};
+const UPGRADES = [
+  {key:"light",  name:"Ringlicht + Kamera Lv 2", cost:400, dur:-0.06, qual:4, stage:2, desc:"Dauer −6 %, Qualität +4. Dein Zimmer wird zum Studio."},
+  {key:"edit",   name:"Editing-Desk + Monitore",  cost:900, dur:-0.06, qual:4, stage:3, desc:"Dauer weitere −6 %, Qualität +4. Schaltet Longform frei (ab Lv 8)."},
+];
+const CONTRACTS = [
+  {id:"nova",  brand:"NOVA Hydration", niche:"fitness", title:"Morgenroutine-Reel", minFollowers:800,  minLevel:2, reward:380, rep:10, brief:"Zeig deine Morgenroutine mit einer NOVA-Flasche im Bild. Ton: energisch, ehrlich.", risk:"niedrig"},
+  {id:"pixl",  brand:"PIXL Peripherals", niche:"gaming", title:"Setup-Tour", minFollowers:1500, minLevel:3, reward:620, rep:15, brief:"Ein Reel über dein Setup. PIXL-Maus muss 3 Sekunden sichtbar sein.", risk:"mittel"},
+  {id:"velm",  brand:"VELMA Studio", niche:"fashion", title:"Outfit-Transition", minFollowers:1200, minLevel:3, reward:540, rep:12, brief:"Drei Outfits, ein Schnitt. VELMA stellt die Looks.", risk:"mittel"},
+];
+const xpFor = n => Math.round(100*Math.pow(n,1.5));
+
+/* ---------- State ---------- */
+const KEY="ce-proto-v1";
+let S = load() || null;
+function fresh(name, arch){
+  const a = ARCHETYPES[arch];
+  return {
+    v:1, created:Date.now(), name, arch,
+    attrs:{reach:a.reach,engagement:a.engagement,creativity:a.creativity,production:a.production,brandFit:a.brandFit},
+    credits:500, followers:0, xp:0, level:1, reputation:0,
+    upgrades:[], job:null, contract:null, notifyAnswer:null, strategy:"balanced", kind:"reel",
+    log:[], answers:{}
+  };
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function load(){ try{ const r=localStorage.getItem(KEY); return r?JSON.parse(r):null; }catch(e){ return null; } }
+function log(ev, data){
+  const line = {t:new Date().toISOString(), ev, ...(data||{})};
+  S.log.push(line); if(S.log.length>300) S.log.shift(); save(); renderLog();
+}
+
+/* ---------- Derived ---------- */
+const $ = s => document.querySelector(s);
+const fmt = n => Math.round(n).toLocaleString("de-DE");
+function equipLevel(){ return S.upgrades.length; }
+function stage(){ return 1 + S.upgrades.length; }
+function qualBonus(){ return S.upgrades.reduce((a,k)=>a+(UPGRADES.find(u=>u.key===k)?.qual||0),0); }
+function durationMin(kind){
+  const base = KINDS[kind].base;
+  const prodSkill = S.attrs.production/10;
+  return Math.max(10, Math.round(base*(1 - equipLevel()*0.06 - prodSkill*0.015)));
+}
+function rawScore(brandFit){
+  const a=S.attrs;
+  return 0.25*a.reach+0.25*a.engagement+0.20*a.creativity+0.15*a.production+0.15*(brandFit??a.brandFit);
+}
+function followerRange(kind, strat){
+  const st = STRATS[strat];
+  const base = KINDS[kind].followers;
+  const mid = rawScore()+st.bonus+qualBonus();
+  const lo = Math.max(0,mid-st.variance), hi=Math.min(100,mid+st.variance);
+  return { lo: Math.round(base*(0.6+lo/100)), hi: Math.round(base*(0.6+hi/100)), mid };
+}
+function seededRand(seed){ let x=Math.sin(seed)*10000; return x-Math.floor(x); }
+
+/* ---------- Actions ---------- */
+function startProduction(kind, strat, contractId){
+  const k=KINDS[kind];
+  if(S.job) return fail("Dein Slot ist belegt. Warte, bis die Produktion fertig ist.");
+  if(S.level<k.minLevel) return fail(`${k.name} gibt es ab Level ${k.minLevel}.`);
+  if(S.credits<k.cost) return fail(`Dir fehlen ${fmt(k.cost-S.credits)} Credits.`);
+  const dur = durationMin(kind);
+  const now=Date.now();
+  S.credits -= k.cost;
+  S.job = { kind, strat, contractId:contractId||null, startedAt:now, completesAt: now + dur*60*1000/TIME_SCALE, seed: Math.floor(Math.random()*1e9), durMin:dur, claimed:false };
+  log("production.start",{kind,strat,contract:contractId||null,cost:k.cost,durationMin:dur});
+  save(); toast(`${k.name} läuft. Du kannst die Seite jetzt schließen.`); renderAll(); show("studio");
+}
+function claim(){
+  const j=S.job; if(!j||Date.now()<j.completesAt) return;
+  if(j.claimed) return; j.claimed=true; // Einmal-Auszahlung
+  const k=KINDS[j.kind], st=STRATS[j.strat];
+  const c = j.contractId ? CONTRACTS.find(x=>x.id===j.contractId) : null;
+  const brandFit = c ? (c.niche===S.arch ? Math.min(100,S.attrs.brandFit+25) : S.attrs.brandFit-10) : undefined;
+  const variance = (seededRand(j.seed)*2-1)*st.variance;
+  const score = Math.max(0,Math.min(100, rawScore(brandFit)+st.bonus+qualBonus()+variance));
+  const followers = Math.round(k.followers*(0.6+score/100));
+  const xp = k.xp + (c?60:0);
+  let credits = Math.round(k.credits*(0.7+score/100*0.6));
+  let note = `Strategie ${st.name}: ${variance>=0?"+":""}${variance.toFixed(1)} Zufall. Qualität +${qualBonus()} durch Studio.`;
+  if(c){
+    const ok = score>=55;
+    if(ok){ credits += c.reward; S.reputation += c.rep; note += ` Vertrag ${c.brand} erfüllt: +${c.reward} Cr, +${c.rep} Reputation.`; }
+    else { S.reputation = Math.max(0,S.reputation-5); note += ` Vertrag ${c.brand} verfehlt (Score unter 55): kein Bonus, −5 Reputation.`; }
+    S.contract=null;
+  }
+  S.followers+=followers; S.credits+=credits; S.xp+=xp;
+  let lvl=S.level; while(S.xp>=xpFor(lvl)) lvl++;
+  const levelUp = lvl>S.level; S.level=lvl;
+  S.job=null;
+  log("production.claim",{kind:j.kind,score:Math.round(score),followers,xp,credits,levelUp:levelUp?lvl:null});
+  save(); renderAll();
+  showResult(k.name, score, followers, xp, credits, note + (levelUp?` Level ${lvl} erreicht!`:""));
+}
+function buyUpgrade(u){
+  if(S.upgrades.includes(u.key)) return;
+  if(S.credits<u.cost) return fail(`Dir fehlen ${fmt(u.cost-S.credits)} Credits für ${u.name}.`);
+  S.credits-=u.cost; S.upgrades.push(u.key);
+  log("upgrade.buy",{key:u.key,cost:u.cost});
+  save(); renderAll(); toast(`${u.name} eingebaut. Schau dir dein Studio an.`); show("studio");
+}
+function acceptContract(c){
+  if(S.contract) return fail("Du hast schon einen aktiven Vertrag.");
+  if(S.followers<c.minFollowers||S.level<c.minLevel) return fail("Voraussetzungen nicht erfüllt.");
+  S.contract=c.id; log("contract.accept",{id:c.id}); save(); renderAll();
+  toast(`Vertrag mit ${c.brand} angenommen. Produziere jetzt ein Reel.`); S.kind="reel"; show("content");
+}
+function fail(msg){ log("action.blocked",{msg}); toast(msg); }
+
+/* ---------- Render ---------- */
+function renderTop(){
+  $("#rCredits").textContent=fmt(S.credits);
+  $("#rFollowers").textContent=fmt(S.followers);
+  $("#rLevel").textContent="Lv "+S.level;
+  const prev = S.level>1?xpFor(S.level-1):0, next=xpFor(S.level);
+  $("#xpFill").style.width = Math.min(100,100*(S.xp-prev)/(next-prev))+"%";
+}
+function renderStudio(){
+  const st=stage();
+  $("#stageLabel").textContent=["","Bedroom","Rising Studio","Professional"][st];
+  $("#creatorName").textContent=S.name;
+  $("#creatorNiche").textContent=ARCHETYPES[S.arch].name+" · "+ARCHETYPES[S.arch].trait;
+  const A=S.attrs;
+  $("#attrs").innerHTML = [["Reach",A.reach],["Engagement",A.engagement],["Creativity",A.creativity],["Production",A.production],["Brand Fit",A.brandFit],["Reputation",S.reputation]]
+    .map(([k,v])=>`<div class="kv"><span class="label">${k}</span><b>${v}</b></div>`).join("");
+  drawScene(st);
+  renderQueue(); renderUpgrades();
+}
+function drawScene(st){
+  const busy = S.job ? KINDS[S.job.kind].station : null;
+  const stn=(id,x,y,w,h,label,inner)=>`<g class="station ${busy===id?"busy":""}" data-station="${id}" tabindex="0" role="button" aria-label="${label}" transform="translate(${x} ${y})">
+    <rect class="glow" x="-6" y="-6" width="${w+12}" height="${h+12}" rx="8" fill="none" stroke="#ffd166" stroke-width="2"/>${inner}</g>`;
+  const floor = `<polygon points="60,250 300,330 540,250 300,170" fill="#2a2434"/><polygon points="60,250 60,140 300,60 300,170" fill="#1b1d2a"/><polygon points="300,170 300,60 540,140 540,250" fill="#22263a"/>`;
+  const wallDeco = st>=2 ? `<rect x="330" y="95" width="120" height="60" rx="4" fill="#ff7a3d" opacity=".55" transform="skewY(18)"/>` : `<rect x="110" y="90" width="70" height="50" rx="3" fill="#3a3f55" transform="skewY(-18)"/>`;
+  const led = st>=2 ? `<line x1="62" y1="142" x2="298" y2="62" stroke="#ff7a3d" stroke-width="3" opacity=".9"/><line x1="302" y1="62" x2="538" y2="142" stroke="#ffd166" stroke-width="3" opacity=".9"/>` : "";
+  const avatar = `<g transform="translate(300 215)"><ellipse cx="0" cy="36" rx="18" ry="6" fill="#000" opacity=".3"/><rect x="-11" y="-6" width="22" height="34" rx="6" fill="${st>=3?"#4cd98a":st>=2?"#ff7a3d":"#6f7a9a"}"/><circle cx="0" cy="-16" r="11" fill="#e9c4a0"/><path d="M-11,-18 q11,-14 22,0 v-4 q-11,-10 -22,0z" fill="#3a2a22"/></g>`;
+  const phone = stn("phone",120,200,70,60,"Smartphone-Station: Story",
+    `<rect x="20" y="0" width="30" height="55" rx="3" fill="#2f3346" stroke="#9a9db0"/><rect x="24" y="4" width="22" height="42" fill="#0e0f14"/><rect x="33" y="55" width="4" height="12" fill="#9a9db0"/>`);
+  const camera = stn("camera",380,195,90,70,"Kamera-Station: Reel",
+    st>=2 ? `<circle cx="40" cy="20" r="22" fill="none" stroke="#ffd166" stroke-width="6" opacity=".95"/><rect x="26" y="40" width="28" height="18" rx="3" fill="#2f3346" stroke="#9a9db0"/><circle cx="40" cy="49" r="6" fill="#0e0f14" stroke="#9a9db0"/><rect x="38" y="58" width="4" height="14" fill="#9a9db0"/>`
+          : `<rect x="26" y="26" width="28" height="18" rx="3" fill="#2f3346" stroke="#6f7a9a"/><circle cx="40" cy="35" r="5" fill="#0e0f14" stroke="#6f7a9a"/><rect x="38" y="44" width="4" height="22" fill="#6f7a9a"/>`);
+  const desk = stn("desk",200,260,110,60,"Streaming-Desk: Livestream",
+    `<polygon points="0,20 55,40 110,20 55,0" fill="#3a3f55"/><rect x="40" y="-10" width="30" height="22" rx="2" fill="#0e0f14" stroke="#9a9db0"/><rect x="52" y="12" width="6" height="8" fill="#9a9db0"/>${S.level>=5?"":`<text x="55" y="58" font-size="10" fill="#9a9db0" text-anchor="middle">ab Lv 5</text>`}`);
+  const edit = st>=3 ? stn("edit",400,275,120,60,"Editing-Desk: Longform",
+    `<polygon points="0,20 60,42 120,20 60,-2" fill="#3a3f55"/><rect x="25" y="-16" width="30" height="22" rx="2" fill="#0e0f14" stroke="#4cd98a"/><rect x="62" y="-14" width="30" height="22" rx="2" fill="#0e0f14" stroke="#4cd98a"/>${S.level>=8?"":`<text x="60" y="58" font-size="10" fill="#9a9db0" text-anchor="middle">ab Lv 8</text>`}`) : "";
+  const upgradeSpot = `<g class="station" data-station="upgrade" tabindex="0" role="button" aria-label="Upgrade-Platz" transform="translate(470 300)"><rect class="glow" x="-4" y="-4" width="48" height="36" rx="6" fill="none" stroke="#ffd166" stroke-width="2"/><rect x="0" y="0" width="40" height="28" rx="4" fill="#2f3346" stroke="#ff7a3d" stroke-dasharray="4 3"/><text x="20" y="19" font-size="14" fill="#ff7a3d" text-anchor="middle">+</text></g>`;
+  $("#scene").innerHTML = `<svg viewBox="0 0 600 375" role="img" aria-label="Isometrisches Studio, Ausbaustufe ${st}">${floor}${wallDeco}${led}${phone}${desk}${avatar}${camera}${edit}${st<3?upgradeSpot:""}</svg><span class="pill acc stage" id="stageLabel">${["","Bedroom","Rising Studio","Professional"][st]}</span>`;
+  $("#scene").querySelectorAll(".station").forEach(el=>{
+    const go=()=>{ const id=el.dataset.station; log("scene.click",{station:id});
+      if(id==="upgrade"){ $("#upgradeCard").scrollIntoView({behavior:"smooth",block:"center"}); return; }
+      S.kind = {phone:"story",camera:"reel",desk:"live",edit:"longf"}[id]; save(); show("content"); };
+    el.addEventListener("click",go); el.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();go();} });
+  });
+}
+function renderQueue(){
+  const q=$("#queueCard");
+  if(!S.job){
+    const low = S.credits<40;
+    q.innerHTML = `<span class="label">Produktionsslot 1 von 1</span><h3>Frei</h3><p class="muted">${low?"Du bist knapp an Credits. Eine kostenlose Spontan-Story bringt dich zurück ins Spiel.":"Starte eine Produktion. Sie läuft weiter, wenn du gehst."}</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">${low?`<button class="btn" id="btnFree">Spontan-Story (0 Cr)</button>`:""}<button class="btn ${low?"sec":""}" id="btnToContent">Content planen</button></div>`;
+    $("#btnToContent").onclick=()=>show("content");
+    const bf=$("#btnFree"); if(bf) bf.onclick=()=>startProduction("free","safe");
+    return;
+  }
+  const j=S.job,k=KINDS[j.kind]; const done=Date.now()>=j.completesAt;
+  const c = j.contractId?CONTRACTS.find(x=>x.id===j.contractId):null;
+  q.innerHTML = `<span class="label">Produktionsslot 1 von 1</span>
+    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline"><h3>${k.name}${c?` für ${c.brand}`:""}</h3><span class="pill ${done?"good":"warn"}">${done?"Fertig":"Läuft"}</span></div>
+    <div class="timer" id="timer">00:00</div>
+    <div class="prog"><i id="progFill"></i></div>
+    <p class="muted" style="font-size:.8rem">Im Spiel: ${j.durMin} Minuten Echtzeit. Hier ${Math.round(j.durMin*60/TIME_SCALE)} Sekunden.</p>
+    ${done?`<button class="btn block" id="btnClaim">Ergebnis abholen</button>`:
+      `<div class="toggle"><div><b>Benachrichtigen, wenn fertig?</b><br><span class="muted" style="font-size:.8rem">Im Prototyp nur eine Frage. Deine Antwort zählt für den Test.</span></div><button class="sw" role="switch" aria-checked="${S.notifyAnswer===true}" id="swNotify" aria-label="Benachrichtigung"></button></div>`}`;
+  const bc=$("#btnClaim"); if(bc) bc.onclick=claim;
+  const sw=$("#swNotify"); if(sw) sw.onclick=()=>{ S.notifyAnswer = sw.getAttribute("aria-checked")!=="true"; sw.setAttribute("aria-checked",S.notifyAnswer); log("notify.answer",{wants:S.notifyAnswer}); save(); };
+  tick();
+}
+function tick(){
+  const j=S.job; if(!j) return;
+  const total=j.completesAt-j.startedAt, left=Math.max(0,j.completesAt-Date.now());
+  const t=$("#timer"); if(!t) return;
+  const s=Math.ceil(left/1000); t.textContent=String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+  $("#progFill").style.width=(100*(1-left/total))+"%";
+  if(left===0 && !$("#btnClaim")){ renderQueue(); markBadge(); }
+}
+function markBadge(){ const b=document.querySelector('nav [data-view="studio"]'); if(S.job&&Date.now()>=S.job.completesAt){ if(!b.querySelector(".badge")) b.insertAdjacentHTML("beforeend",'<span class="badge"></span>'); } else b.querySelector(".badge")?.remove(); }
+function renderUpgrades(){
+  const next = UPGRADES.find(u=>!S.upgrades.includes(u.key));
+  const u=$("#upgradeCard");
+  if(!next){ u.innerHTML=`<span class="label">Studio-Ausbau</span><h3>Professional erreicht</h3><p class="muted">Im Prototyp endet der Ausbau hier. Im Spiel folgen Agency und Empire.</p>`; return; }
+  const can=S.credits>=next.cost;
+  u.innerHTML=`<span class="label">Studio-Ausbau</span><h3>${next.name}</h3><p class="muted">${next.desc}</p>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><b class="mono" style="color:var(--accent-2)">${fmt(next.cost)} Cr</b><button class="btn ${can?"":"sec"}" id="btnUpgrade">${can?"Einbauen":"Noch "+fmt(next.cost-S.credits)+" Cr"}</button></div>`;
+  $("#btnUpgrade").onclick=()=>buyUpgrade(next);
+}
+function renderContent(){
+  $("#kinds").innerHTML = Object.entries(KINDS).filter(([k])=>k!=="free").map(([k,v])=>{
+    const locked=S.level<v.minLevel;
+    return `<button class="opt ${locked?"locked":""}" data-kind="${k}" aria-pressed="${S.kind===k}" ${locked?"aria-disabled='true'":""}>
+      <span class="t">${v.name}</span><span class="r">${v.cost} Cr</span>
+      <span class="s">${v.base>=60?v.base/60+" h":v.base+" Min"} · ${v.xp} XP · ~${fmt(v.followers)} Follower${locked?` · ab Level ${v.minLevel}`:""}</span></button>`;}).join("");
+  $("#kinds").querySelectorAll(".opt").forEach(b=>b.onclick=()=>{ if(b.classList.contains("locked")) return fail(`Ab Level ${KINDS[b.dataset.kind].minLevel}.`); S.kind=b.dataset.kind; save(); renderContent(); });
+  $("#strategies").innerHTML = Object.entries(STRATS).map(([k,v])=>`<button data-strat="${k}" aria-pressed="${S.strategy===k}">${v.name}</button>`).join("");
+  $("#strategies").querySelectorAll("button").forEach(b=>b.onclick=()=>{ S.strategy=b.dataset.strat; save(); renderContent(); });
+  $("#stratDesc").textContent=STRATS[S.strategy].desc;
+  const k=KINDS[S.kind], dur=durationMin(S.kind), r=followerRange(S.kind,S.strategy);
+  $("#fDur").textContent = dur>=60?(dur/60).toFixed(1).replace(".",",")+" h":dur+" Min";
+  $("#fCost").textContent = k.cost+" Cr";
+  $("#fXp").textContent = "+"+k.xp;
+  $("#fFollow").textContent = `+${fmt(r.lo)} bis +${fmt(r.hi)}`;
+  const minF=k.followers*0.6, maxF=k.followers*1.6;
+  $("#fBand").style.left=(100*(r.lo-minF)/(maxF-minF))+"%"; $("#fBand").style.right=(100-100*(r.hi-minF)/(maxF-minF))+"%";
+  const c = S.contract?CONTRACTS.find(x=>x.id===S.contract):null;
+  const btn=$("#btnProduce"); let why="";
+  if(S.job) why="Slot belegt. Warte auf die laufende Produktion.";
+  else if(S.credits<k.cost) why=`Dir fehlen ${fmt(k.cost-S.credits)} Credits.`;
+  else if(c && S.kind!=="reel") why=`Vertrag mit ${c.brand} verlangt ein Reel.`;
+  btn.disabled=!!why; btn.textContent = c&&S.kind==="reel" ? `Reel für ${c.brand} starten` : `${k.name} starten`;
+  $("#produceWhy").textContent=why;
+  btn.onclick=()=>startProduction(S.kind,S.strategy, c&&S.kind==="reel"?c.id:null);
+}
+function renderContracts(){
+  $("#contracts").innerHTML = CONTRACTS.map(c=>{
+    const okF=S.followers>=c.minFollowers, okL=S.level>=c.minLevel, active=S.contract===c.id;
+    const fit = c.niche===S.arch;
+    return `<div class="card ${active?"hi":""}">
+      <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline"><h3>${c.title}</h3><span class="pill ${fit?"good":"warn"}">${fit?"Passt zu deiner Nische":"Fremde Nische"}</span></div>
+      <p><b>${c.brand}</b> <span class="muted">· fiktive Marke · ${ARCHETYPES[c.niche].name}</span></p>
+      <p class="muted">${c.brief}</p>
+      <div class="grid2">
+        <div class="kv"><span class="label">Belohnung</span><b>+${fmt(c.reward)} Cr</b></div>
+        <div class="kv"><span class="label">Reputation</span><b>+${c.rep}</b></div>
+        <div class="kv"><span class="label">Follower ab</span><b style="color:${okF?"var(--good)":"var(--bad)"}">${fmt(c.minFollowers)}</b></div>
+        <div class="kv"><span class="label">Level ab</span><b style="color:${okL?"var(--good)":"var(--bad)"}">${c.minLevel}</b></div>
+      </div>
+      <p class="muted" style="font-size:.8rem">Risiko ${c.risk}. Erfüllt ab Score 55. ${fit?"Nischen-Bonus +25 Brand Fit.":"Nischen-Malus −10 Brand Fit."}</p>
+      <button class="btn ${okF&&okL&&!S.contract?"":"sec"}" data-c="${c.id}" ${active?"disabled":""}>${active?"Aktiv: produziere ein Reel":"Vertrag annehmen"}</button>
+    </div>`;}).join("");
+  $("#contracts").querySelectorAll("button[data-c]").forEach(b=>b.onclick=()=>acceptContract(CONTRACTS.find(c=>c.id===b.dataset.c)));
+}
+function renderLog(){
+  const el=$("#log"); if(!el) return;
+  el.textContent = S.log.map(l=>{ const {t,ev,...rest}=l; return `${t.slice(11,19)} ${ev} ${Object.keys(rest).length?JSON.stringify(rest):""}`; }).join("\n") || "Noch nichts passiert.";
+  el.scrollTop=el.scrollHeight;
+}
+function renderAll(){ renderTop(); renderStudio(); renderContent(); renderContracts(); renderLog(); markBadge(); }
+
+/* ---------- Result / FX ---------- */
+function showResult(kind,score,f,xp,cr,note){
+  $("#resKind").textContent=kind+" fertig";
+  $("#resScore").textContent=Math.round(score);
+  $("#gFollow").textContent="+"+fmt(f); $("#gXp").textContent="+"+fmt(xp); $("#gCred").textContent="+"+fmt(cr);
+  $("#resNote").textContent=note;
+  $("#overlay").hidden=false; $("#btnCloseRes").focus();
+  if(!matchMedia("(prefers-reduced-motion: reduce)").matches) confetti(score);
+}
+$("#btnCloseRes").onclick=()=>{ $("#overlay").hidden=true; log("result.closed"); };
+function confetti(score){
+  const c=$("#confetti"); c.hidden=false; c.width=innerWidth; c.height=innerHeight; const ctx=c.getContext("2d");
+  const n=Math.round(40+score*1.2), ps=[]; const cols=["#ff7a3d","#ffd166","#4cd98a","#f1efe8"];
+  for(let i=0;i<n;i++) ps.push({x:c.width/2,y:c.height*0.45,vx:(Math.random()-0.5)*14,vy:-Math.random()*14-4,r:3+Math.random()*4,col:cols[i%4],rot:Math.random()*6});
+  let t=0; (function frame(){ ctx.clearRect(0,0,c.width,c.height); t++;
+    ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=0.45;p.rot+=0.1;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.fillStyle=p.col;ctx.fillRect(-p.r,-p.r/2,p.r*2,p.r);ctx.restore();});
+    if(t<110) requestAnimationFrame(frame); else { ctx.clearRect(0,0,c.width,c.height); c.hidden=true; } })();
+}
+let toastEl=null;
+function toast(msg){ toastEl?.remove(); toastEl=document.createElement("div"); toastEl.className="toast"; toastEl.textContent=msg; document.body.appendChild(toastEl); setTimeout(()=>toastEl?.remove(),2700); }
+
+/* ---------- Navigation ---------- */
+function show(view){
+  document.querySelectorAll(".view").forEach(v=>v.hidden=true);
+  $("#v-"+view).hidden=false;
+  document.querySelectorAll("nav button").forEach(b=>b.toggleAttribute("aria-current",false));
+  const nb=document.querySelector(`nav [data-view="${view}"]`); if(nb) nb.setAttribute("aria-current","page");
+  document.querySelector("nav").hidden = view==="onboard";
+  if(S) log("view."+view);
+  $("main").scrollTop=0;
+}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.view));
+
+/* ---------- Onboarding ---------- */
+let pickedArch="gaming";
+function renderArchetypes(){
+  $("#archetypes").innerHTML=Object.entries(ARCHETYPES).map(([k,a])=>`<button class="opt" data-a="${k}" aria-pressed="${pickedArch===k}"><span class="t">${a.name}</span><span class="r">${a.trait}</span><span class="s">Reach ${a.reach} · Engagement ${a.engagement} · Creativity ${a.creativity} · Production ${a.production} · Brand Fit ${a.brandFit}</span></button>`).join("");
+  $("#archetypes").querySelectorAll(".opt").forEach(b=>b.onclick=()=>{pickedArch=b.dataset.a;renderArchetypes();});
+}
+$("#btnStart").onclick=()=>{
+  const name=$("#cName").value.trim()||"Nova";
+  S=fresh(name,pickedArch); log("onboard.done",{name,arch:pickedArch}); save(); renderAll(); show("studio");
+  toast("Willkommen im Schlafzimmerstudio. Tippe auf das Smartphone für deine erste Story.");
+};
+
+/* ---------- Test panel ---------- */
+document.querySelectorAll("[data-q]").forEach(g=>g.querySelectorAll("button").forEach(b=>b.onclick=()=>{
+  g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true");
+  S.answers[g.dataset.q]=b.textContent; save();
+}));
+$("#btnSubmit").onclick=()=>{ S.answers.loop=$("#qLoop").value.trim(); log("survey.submit",{...S.answers, notifyWanted:S.notifyAnswer, minutesPlayed:Math.round((Date.now()-S.created)/60000)}); toast("Gespeichert. Jetzt Protokoll kopieren."); };
+$("#btnCopyLog").onclick=async()=>{
+  const text = JSON.stringify({prototype:"creator-empire-v1",creator:S.name,niche:S.arch,level:S.level,followers:S.followers,credits:S.credits,upgrades:S.upgrades,answers:S.answers,notifyWanted:S.notifyAnswer,log:S.log},null,2);
+  try{ await navigator.clipboard.writeText(text); toast("Protokoll in der Zwischenablage."); }
+  catch(e){ const r=document.createRange(); r.selectNodeContents($("#log")); const sel=getSelection(); sel.removeAllRanges(); sel.addRange(r); toast("Kopieren blockiert. Text ist markiert: jetzt Strg+C."); }
+};
+let resetArmed=false;
+$("#btnReset").onclick=()=>{ if(!resetArmed){ resetArmed=true; $("#btnReset").textContent="Wirklich zurücksetzen?"; setTimeout(()=>{resetArmed=false;$("#btnReset").textContent="Prototyp zurücksetzen";},3000); return; }
+  try{ localStorage.removeItem(KEY); }catch(e){} S=null; location.reload(); };
+
+/* ---------- Boot ---------- */
+renderArchetypes();
+if(S){ renderAll(); show("studio"); if(S.job&&Date.now()>=S.job.completesAt) toast("Deine Produktion ist fertig geworden, während du weg warst."); }
+else { document.querySelector("nav").hidden=true; show("onboard"); }
+setInterval(()=>{ if(S&&S.job) tick(); },500);
+})();
+</script>
