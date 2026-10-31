@@ -19,6 +19,7 @@ asynchrone Challenges. Arbeitsname, Marken- und Domainrecherche steht noch aus.
 | [AGENTS.md](AGENTS.md) | Arbeitsregeln für Coding-Agenten (Claude Code, Cursor, Codex) |
 | [prototype/index.html](prototype/index.html) | Klickprototyp Phase 0 (eine Datei, kein Build). Live: https://claude.ai/artifact/K6wMyGvMkDzzJK25nXi5cV |
 | [docs/phase-0/](docs/phase-0/) | Interviewleitfaden, Namenscheck, Tracking, Datenkonzept der Phase 0 |
+| [docs/DEPLOY.md](docs/DEPLOY.md) | Prototyp auf Netlify bringen, später Supabase und das volle Spiel |
 
 ## Warum liegt das hier?
 
