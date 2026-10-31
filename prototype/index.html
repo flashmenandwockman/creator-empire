@@ -191,6 +191,13 @@ nav button .badge{position:absolute;top:6px;right:calc(50% - 20px);width:10px;he
     <input type="text" id="cName" maxlength="24" placeholder="z. B. Lumi, Kaya, Jonte" autocomplete="off">
     <span class="label">Nische</span>
     <div class="tiles" id="archetypes"></div>
+    <div class="tile c1" style="cursor:default;gap:10px">
+      <span class="t">Wem folgst du gerade am liebsten?</span>
+      <span class="s" style="color:var(--ink)">Dein Vorbild bekommt einen Platz an deiner Studiowand. Handle reicht, z. B. @name. Optional, später erweiterbar.</span>
+      <input type="text" id="idol0" maxlength="40" placeholder="@handle" autocomplete="off" style="background:#fff">
+      <div class="seg" id="idolPlatform0"><button data-p="TikTok" aria-pressed="true">TikTok</button><button data-p="Instagram">Instagram</button><button data-p="YouTube">YouTube</button><button data-p="Twitch">Twitch</button></div>
+    </div>
+    <label class="toggle" style="cursor:pointer"><span style="font-size:.85rem;font-weight:700">Ich bin einverstanden, dass meine Angaben im Prototyp (Spielverlauf, Vorbilder, Trends, eingereichte Links) für die Auswertung des Tests genutzt werden. Keine Weitergabe, Löschung auf Wunsch.</span><input type="checkbox" id="consent" style="width:22px;height:22px;flex:none"></label>
     <button class="btn block" id="btnStart">Studio betreten</button>
     <p class="notice">Timer sind im Prototyp stark verkürzt: 4 Stunden Echtzeit entsprechen 45 Sekunden. Im fertigen Spiel läuft eine Produktion weiter, wenn du die App schließt. Das tut sie hier auch.</p>
   </div>
@@ -234,6 +241,7 @@ nav button .badge{position:absolute;top:6px;right:calc(50% - 20px);width:10px;he
       <div class="band" style="margin-top:6px"><i id="fBand" style="left:20%;right:30%"></i></div>
     </div>
     <p class="muted" style="font-size:.78rem;font-weight:700">Keine Garantie. Der Server würfelt mit festem Seed innerhalb dieser Spanne.</p>
+    <div id="trendRow"></div>
     <button class="btn block" id="btnProduce">Produktion starten</button>
     <p class="muted" id="produceWhy" style="font-size:.8rem;font-weight:700"></p>
   </div>
@@ -246,12 +254,15 @@ nav button .badge{position:absolute;top:6px;right:calc(50% - 20px);width:10px;he
     <p class="muted" style="font-weight:700">Ein Vertrag ist ein Reel mit Briefing: mehr Credits und Reputation. Wer mit einer Brand abschließt, ist 24 Stunden exklusiv an sie gebunden. Konkurrenten derselben Kategorie sind so lange gesperrt. Jeder weitere Abschluss hebt dein Partner-Level und die Gage.</p>
     <p class="notice">Reale Markennamen dienen im Prototyp nur als Beispiel für die Spielmechanik. Keine Partnerschaft, keine Logos, keine Aussagen über die Unternehmen.</p>
     <div id="exclusiveInfo"></div>
+    <button class="btn ghost" data-goto="suggest" style="justify-self:start">➕ Deine Brand fehlt? Link einreichen</button>
   </div>
   <div id="contracts" style="display:grid;gap:30px"></div>
   <div class="card tint-peach" id="ownBrandCard"></div>
 </section>
 
 <section class="view" id="v-rank" hidden>
+  <div class="card" id="idolsCard"></div>
+  <div class="card tint-peach" id="trendsCard"></div>
   <div class="card tint-lilac">
     <span class="label">Event Hub</span>
     <h2>Markenevents</h2>
@@ -265,6 +276,7 @@ nav button .badge{position:absolute;top:6px;right:calc(50% - 20px);width:10px;he
     <p class="muted" style="font-weight:700">Neue Meldungen aus deiner Nische tauchen über den Tag auf. Du kannst laut reagieren (hohe Chance, hohes Risiko), sachlich einordnen (kleiner, sicherer Gewinn) oder es lassen. Jede Meldung verfällt nach 6 Stunden.</p>
     <div id="news" style="display:grid;gap:16px"></div>
   </div>
+  <div class="card" id="suggestCard"></div>
   <div class="card">
     <span class="label">Wochenranking · Liga Newcomer</span>
     <h2>Rangliste</h2>
@@ -299,6 +311,10 @@ nav button .badge{position:absolute;top:6px;right:calc(50% - 20px);width:10px;he
     <div class="seg" data-q="pay"><button>Nichts</button><button>Outfits / Deko</button><button>Schnellere Timer</button><button>Weiß nicht</button></div>
     <h3>4. Interessieren dich echte Brand-Events im Spiel?</h3>
     <div class="scale" data-q="events"><button>1</button><button>2</button><button>3</button><button>4</button><button>5</button></div>
+    <h3>5. Würdest du echten Creatorn im Spiel folgen, wenn sie offiziell dabei wären?</h3>
+    <div class="seg" data-q="followReal"><button>Ja, sofort</button><button>Nur meinen Vorbildern</button><button>Nein</button><button>Weiß nicht</button></div>
+    <h3>6. Welche Produkte oder Brands müssten unbedingt rein?</h3>
+    <textarea id="qBrands" rows="2" placeholder="frei, Namen reichen"></textarea>
     <button class="btn block green" id="btnSubmit">Antworten ins Protokoll</button>
   </div>
 </section>
@@ -407,6 +423,16 @@ const NEWS = [ // taucht gestaffelt auf: atHour = Spielstunden seit Start
   {id:"n6",atHour:8,niche:"all",cat:"nutrition",head:"Plattform testet längere Reels bis 10 Minuten",body:"Longform im Kurzvideo-Format. Wer früh testet, bekommt Reichweiten-Boost, heißt es.",react:{win:"Dein 9-Minuten-Reel läuft. Algorithmus liebt dich.",lose:"Niemand schaut 9 Minuten. Watchtime im Keller.",p:.5,f:900,rep:-5},calm:{text:"Du testest 3 Minuten. Solide.",f:250,rep:2}},
 ];
 const NEWS_TTL_H = 6;
+const TRENDS = [ // Beispiel-Trends der Community; eigene Trends der Spieler kommen oben dazu
+  {id:"t1",name:"POV-Morgenroutine mit Voiceover",niche:"fitness",by:"jonte.fit"},
+  {id:"t2",name:"„Rate mein Setup“ in 15 Sekunden",niche:"gaming",by:"kaya.streams"},
+  {id:"t3",name:"Outfit-Transition auf Beat-Drop",niche:"fashion",by:"MilaMakes"},
+  {id:"t4",name:"Ehrliches Review ohne Schnitt",niche:"all",by:"noah.edits"},
+  {id:"t5",name:"Day-in-the-life als Creator",niche:"all",by:"aylin.ootd"},
+];
+const TREND = {bonus:1.2, freshH:8, ttlH:12, lateP:.35, latePenalty:0.9}; // Trend-Reel: +20 % Follower; nach 8 h Risiko 35 %, dass es „zu spät“ ist (×0,9)
+const SUGGEST_TYPES = {product:"Produkt",brand:"Brand",event:"Event",creator:"Creator",action:"Aktion / Format",other:"Sonstiges"};
+const PLATFORMS = ["TikTok","Instagram","YouTube","Twitch"];
 const BOTS = [
   {name:"kaya.streams",niche:"gaming",base:2400,rate:180,lv:4},{name:"jonte.fit",niche:"fitness",base:1900,rate:220,lv:3},
   {name:"MilaMakes",niche:"fashion",base:3100,rate:140,lv:5},{name:"deniz_dsgn",niche:"fashion",base:900,rate:260,lv:2},
@@ -447,12 +473,12 @@ const STAGES = {
 const KEY="ce-proto-v3";
 let S = load() || null;
 if(S&&S.v!==3){ Object.assign(S,{v:3,energy:ENERGY_START,energyAt:Date.now(),food:null,boostAt:0,callAt:0,inspiration:0,exclusive:{},partners:{},ownBrand:null,badges:[],hype:0,hypeAt:Date.now(),newsDone:{},eventsDone:{},botAdj:{},declined:{},classes:[]}); }
-if(S){ S.botAdj=S.botAdj||{}; S.declined=S.declined||{}; S.classes=S.classes||[]; }
+if(S){ S.botAdj=S.botAdj||{}; S.declined=S.declined||{}; S.classes=S.classes||[]; S.idols=S.idols||[]; S.myTrends=S.myTrends||[]; S.suggestions=S.suggestions||[]; }
 function fresh(name, arch){
   const a=ARCHETYPES[arch];
   return {v:2,created:Date.now(),name,arch,attrs:{reach:a.reach,engagement:a.engagement,creativity:a.creativity,production:a.production,brandFit:a.brandFit},
     credits:500,followers:0,xp:0,level:1,reputation:0,upgrades:[],job:null,contract:null,notifyAnswer:null,strategy:"balanced",kind:"story",log:[],answers:{},
-    energy:ENERGY_START,energyAt:Date.now(),food:null,boostAt:0,callAt:0,inspiration:0,exclusive:{},partners:{},ownBrand:null,badges:[],hype:0,hypeAt:Date.now(),newsDone:{},eventsDone:{},botAdj:{},declined:{},classes:[]};
+    energy:ENERGY_START,energyAt:Date.now(),food:null,boostAt:0,callAt:0,inspiration:0,exclusive:{},partners:{},ownBrand:null,badges:[],hype:0,hypeAt:Date.now(),newsDone:{},eventsDone:{},botAdj:{},declined:{},classes:[],idols:[],myTrends:[],activeTrend:null,suggestions:[],consent:false};
 }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 function load(){ try{ const r=localStorage.getItem(KEY); return r?JSON.parse(r):null; }catch(e){ return null; } }
@@ -497,7 +523,8 @@ function startProduction(kind,strat,contractId,eventId,partner){
   syncEnergy(); if(S.energy<k.energy) return fail(`Zu wenig Energie (${Math.floor(S.energy)}/${k.energy}). Bestell was zu essen oder ruf einen Friend an.`);
   const dur=durationMin(kind),now=Date.now();
   S.credits-=k.cost; S.energy-=k.energy;
-  S.job={kind,strat,contractId:contractId||null,eventId:eventId||null,partner:partner||null,startedAt:now,completesAt:now+dur*60*1000/TIME_SCALE,seed:Math.floor(Math.random()*1e9),durMin:dur,claimed:false};
+  const trend=(S.activeTrend&&(kind==="reel"||kind==="story"))?S.activeTrend:null; if(trend) S.activeTrend=null;
+  S.job={kind,strat,contractId:contractId||null,eventId:eventId||null,partner:partner||null,trend,startedAt:now,completesAt:now+dur*60*1000/TIME_SCALE,seed:Math.floor(Math.random()*1e9),durMin:dur,claimed:false};
   log("production.start",{kind,strat,contract:contractId||null,event:eventId||null,partner:partner||null,cost:k.cost,energy:k.energy,durationMin:dur});
   save(); toast(k.klass?`${k.name} läuft. Solange kein Content, aber danach bist du besser.`:`${k.name} läuft. Du kannst die Seite jetzt schließen.`); renderAll(); show("studio");
 }
@@ -510,6 +537,8 @@ function claim(){
   const insp=S.inspiration||0; S.inspiration=0;
   const score=Math.max(0,Math.min(100,rawScore(bf)+st.bonus+qualBonus()+variance+insp));
   syncEnergy(); const hypeMult=1+(S.hype||0)/100; let followers=Math.round(k.followers*(0.6+score/100)*hypeMult); const xp=k.xp+(c?60:0)+(j.eventId?80:0);
+  let trendNote=""; if(j.trend){ const ageH=gameH(j.startedAt-(j.trend.pickedAt||j.startedAt)); const late=ageH>TREND.freshH&&seededRand(j.seed+7)<TREND.lateP;
+    if(late){ followers=Math.round(followers*TREND.latePenalty); trendNote=` Trend „${j.trend.name}“ zu spät aufgegriffen: ×${TREND.latePenalty}.`; } else { followers=Math.round(followers*TREND.bonus); S.hype=Math.min(100,(S.hype||0)+8); trendNote=` Trend „${j.trend.name}“ getroffen: ×${TREND.bonus}, +8 Hype.`; } }
   let collabNote=""; if(k.collab&&j.partner){ const bot=BOTS.find(b=>b.name===j.partner); const pf=botFollowers(bot,Date.now()); const [tier]=collabTier(pf); const t=COLLAB[tier];
     followers=Math.round(followers*t.you); const pd=tier==="big"?Math.round(pf*t.partner):Math.round(k.followers*(0.6+score/100)*t.partner); S.botAdj[bot.name]=(S.botAdj[bot.name]||0)+pd;
     collabNote=` Collab mit ${bot.name} (${t.label}): du +${fmt(followers)}, ${bot.name} ${pd>=0?"+":""}${fmt(pd)} Follower.`; }
@@ -522,7 +551,7 @@ function claim(){
       note+=` Vertrag ${c.brand} erfüllt: +${gage} Cr, +${c.rep} Reputation. Partner-Level ${S.partners[c.id]}. Du bist jetzt ${EXCLUSIVE_HOURS} h exklusiv in ${CATS[c.cat].name}.`; }
     else { S.reputation=Math.max(0,S.reputation-5); note+=` Vertrag ${c.brand} verfehlt (Score unter 55): kein Bonus, −5 Reputation.`; } S.contract=null; }
   if(k.klass) note=`Class abgeschlossen: ${Object.entries(k.attr).map(([a,v])=>`+${v} ${NAMES[a]}`).join(", ")}${k.rep?`, +${k.rep} Reputation`:""} dauerhaft. +${k.xp} XP.`;
-  if(hypeMult>1&&!k.klass) note+=` Hype ×${hypeMult.toFixed(2)} auf Follower.`; note+=collabNote;
+  if(hypeMult>1&&!k.klass) note+=` Hype ×${hypeMult.toFixed(2)} auf Follower.`; note+=trendNote+collabNote;
   if(ev){ S.eventsDone[ev.id]=true; if(score>=EVENT_THRESHOLD){ credits+=ev.reward; S.reputation+=ev.rep; S.hype=Math.min(100,(S.hype||0)+ev.hype); S.badges.push(ev.id); note+=` Event ${ev.title}: Top-Platzierung! +${ev.reward} Cr, +${ev.rep} Reputation, +${ev.hype} Hype, Abzeichen.`; }
     else { S.reputation=Math.max(0,S.reputation-3); note+=` Event ${ev.title}: Score unter ${EVENT_THRESHOLD}, keine Platzierung. −3 Reputation.`; } }
   S.followers+=followers; S.credits+=credits; S.xp+=xp;
@@ -579,6 +608,22 @@ function requestCollab(bot){
   if(!ok){ S.declined[bot.name]=Date.now()+realMs(360); save(); renderRank(); return toast(`${bot.name} sagt ab: „Passt gerade nicht.“ Mehr Reputation erhöht deine Chance.`); }
   S.collabPick=null; startProduction("collab",S.strategy,null,null,bot.name);
 }
+function addIdol(handle,platform,why){
+  handle=(handle||"").trim().replace(/^@+/,""); if(!handle) return fail("Handle fehlt.");
+  if(S.idols.length>=5) return fail("Fünf Vorbilder reichen für den Anfang.");
+  if(S.idols.some(i=>i.handle.toLowerCase()===handle.toLowerCase()&&i.platform===platform)) return fail("Hast du schon.");
+  S.idols.push({handle,platform,why:(why||"").trim(),at:new Date().toISOString()}); log("idol.add",{handle,platform,why:(why||"").trim()});
+  S.energy=Math.min(ENERGY_MAX,S.energy+5); save(); renderAll(); toast(`@${handle} hängt jetzt an deiner Studiowand. +5 Energie fürs Teilen.`);
+}
+function removeIdol(i){ const x=S.idols.splice(i,1)[0]; log("idol.remove",{handle:x.handle}); save(); renderAll(); }
+function allTrends(){ return [...S.myTrends.map(t=>({...t,mine:true})),...TRENDS.filter(t=>t.niche==="all"||t.niche===S.arch)]; }
+function addTrend(name,where){ name=(name||"").trim(); if(name.length<3) return fail("Beschreib den Trend in ein paar Worten.");
+  const t={id:"my"+Date.now(),name,where:(where||"").trim(),niche:S.arch,by:S.name,at:Date.now()}; S.myTrends.unshift(t); log("trend.add",{name,where:t.where}); pickTrend(t); }
+function pickTrend(t){ S.activeTrend={id:t.id,name:t.name,pickedAt:Date.now(),mine:!!t.mine||t.by===S.name}; log("trend.pick",{id:t.id,name:t.name,mine:S.activeTrend.mine}); save(); renderAll(); S.kind="reel"; show("content"); toast(`Trend gewählt: „${t.name}“. Gilt für deine nächste Story oder dein nächstes Reel.`); }
+function addSuggestion(url,type,note){ url=(url||"").trim(); if(!/^https?:\/\/\S+\.\S+/.test(url)) return fail("Bitte einen vollständigen Link mit https:// einfügen.");
+  S.suggestions.push({url,type,note:(note||"").trim(),status:"eingereicht",at:new Date().toISOString()}); log("suggest.submit",{url,type,note:(note||"").trim()});
+  if(S.suggestions.length===3&&!S.badges.includes("scout")){ S.badges.push("scout"); toast("Scout-Abzeichen: drei Vorschläge eingereicht."); } else toast("Danke. Wir prüfen den Link und nehmen passende Dinge ins Spiel auf.");
+  save(); renderAll(); }
 function claimBrandIncome(){ const inc=ownBrandIncome(); if(inc<1) return toast("Noch nichts zum Abholen."); S.credits+=inc; S.ownBrand.lastClaimAt=Date.now(); log("brand.income",{credits:inc}); save(); renderAll(); toast(`+${fmt(inc)} Credits aus ${S.ownBrand.name}.`); }
 
 /* ---------- Render ---------- */
@@ -616,6 +661,48 @@ function renderAcademy(){
       return `<button class="tile ${v.tile} ${locked||done?"locked":""}" data-class="${k}" ${can?"":"disabled"}><span class="em">${v.em}</span><span class="t">${v.name}</span><span class="r">$ ${v.cost} · ⚡${v.energy}</span><span class="s">${v.desc}</span><span class="s">+${v.xp} XP${locked?` · ab Lv ${v.minLevel}`:done?" · abgeschlossen":busy?" · Slot belegt":S.energy<v.energy?" · zu wenig Energie":S.credits<v.cost?" · zu wenig Credits":""}</span></button>`; }).join("")}</div>`;
   el.querySelectorAll("[data-class]").forEach(b=>b.onclick=()=>startProduction(b.dataset.class,"safe"));
 }
+function renderIdols(){
+  const el=$("#idolsCard"); if(!el) return;
+  el.innerHTML=`<span class="label">Deine Vorbilder · Studiowand</span><h2>Wem folgst du im echten Leben?</h2>
+    <p class="muted" style="font-weight:700">Trag die Creator ein, die du wirklich verfolgst. Im Spiel ist das ein Lesezeichen an deiner Studiowand, keine Verbindung zum echten Account. Für uns ist es die wichtigste Information des Tests: Wer inspiriert dich, und was davon sollte ins Spiel?</p>
+    ${S.idols.length?`<div class="tiles">${S.idols.map((i,n)=>`<div class="tile ${["c1","c2","c3","c4"][n%4]}" style="cursor:default"><span class="t">@${i.handle}</span><span class="s">${i.platform}${i.why?` · ${i.why}`:""}</span><button class="btn ghost" data-ri="${n}" style="padding:4px 0">Entfernen</button></div>`).join("")}</div>`:`<p class="muted" style="font-weight:700">Noch leer.</p>`}
+    ${S.idols.length<5?`<div class="grid2" style="align-items:end"><div><label class="label" for="idolH">Handle</label><input type="text" id="idolH" maxlength="40" placeholder="@handle" autocomplete="off"></div><div><label class="label" for="idolW">Warum? (optional)</label><input type="text" id="idolW" maxlength="80" placeholder="z. B. ehrlich, gute Schnitte" autocomplete="off"></div></div>
+    <div class="seg" id="idolP">${PLATFORMS.map((p,i)=>`<button data-p="${p}" aria-pressed="${i===0}">${p}</button>`).join("")}</div>
+    <button class="btn sec" id="btnIdol" style="justify-self:start">Vorbild hinzufügen · +5 Energie</button>`:""}`;
+  el.querySelectorAll("[data-ri]").forEach(b=>b.onclick=()=>removeIdol(+b.dataset.ri));
+  let plat=PLATFORMS[0]; el.querySelectorAll("#idolP button").forEach(b=>b.onclick=()=>{ plat=b.dataset.p; el.querySelectorAll("#idolP button").forEach(x=>x.setAttribute("aria-pressed",x===b)); });
+  const bi=$("#btnIdol"); if(bi) bi.onclick=()=>addIdol($("#idolH").value,plat,$("#idolW").value);
+}
+function renderTrends(){
+  const el=$("#trendsCard"); if(!el) return; const act=S.activeTrend;
+  el.innerHTML=`<span class="label">Trends</span><h2>Was geht gerade?</h2>
+    <p class="muted" style="font-weight:700">Trag ein, was du gerade auf deinem Feed siehst: ein Sound, ein Format, eine Challenge. Greif es auf, dann bringt dein nächstes Reel oder deine nächste Story ×${TREND.bonus} Follower und Hype. Aber Trends sind kurzlebig: nach ${TREND.freshH} Spielstunden besteht ${Math.round(TREND.lateP*100)} % Risiko, zu spät zu sein (×${TREND.latePenalty}).</p>
+    ${act?`<div class="tile c3" style="cursor:default"><span class="t">Aktiv: ${act.name}</span><span class="s">gewählt vor ${gameClock(Date.now()-act.pickedAt)} · gilt für die nächste Story oder das nächste Reel</span></div>`:""}
+    <div class="grid2" style="align-items:end"><div><label class="label" for="trendN">Trend</label><input type="text" id="trendN" maxlength="80" placeholder="z. B. „Get ready with me“ mit Plot-Twist" autocomplete="off"></div><div><label class="label" for="trendW">Wo gesehen? (optional)</label><input type="text" id="trendW" maxlength="80" placeholder="TikTok, @handle, Link" autocomplete="off"></div></div>
+    <button class="btn" id="btnTrend" style="justify-self:start">Trend eintragen und aufgreifen</button>
+    <span class="label">Trends der Community</span>
+    <div class="tiles">${allTrends().map((t,i)=>`<button class="tile ${t.mine?"c3":["c1","c2","c4"][i%3]}" data-trend="${t.id}"><span class="t">${t.name}</span><span class="s">von ${t.by}${t.where?` · ${t.where}`:""}${t.mine?" · dein Eintrag":""}</span><span class="r">aufgreifen</span></button>`).join("")}</div>`;
+  $("#btnTrend").onclick=()=>addTrend($("#trendN").value,$("#trendW").value);
+  el.querySelectorAll("[data-trend]").forEach(b=>b.onclick=()=>pickTrend(allTrends().find(t=>t.id===b.dataset.trend)));
+}
+function renderSuggest(){
+  const el=$("#suggestCard"); if(!el) return;
+  el.innerHTML=`<span class="label">Fehlt etwas? · Scout</span><h2>Link einreichen</h2>
+    <p class="muted" style="font-weight:700">Ein Produkt, eine Brand, ein Event, ein Creator oder ein Format, das du im Spiel vermisst? Link rein. Wir prüfen es und bieten es dann im Spiel an. Drei Einreichungen geben das Scout-Abzeichen.</p>
+    <label class="label" for="sugUrl">Link</label><input type="text" id="sugUrl" inputmode="url" placeholder="https://…" autocomplete="off">
+    <span class="label">Was ist das?</span><div class="seg" id="sugType">${Object.entries(SUGGEST_TYPES).map(([k,v],i)=>`<button data-t="${k}" aria-pressed="${i===0}">${v}</button>`).join("")}</div>
+    <label class="label" for="sugNote">Warum gehört das ins Spiel? (optional)</label><input type="text" id="sugNote" maxlength="120" placeholder="kurz" autocomplete="off">
+    <button class="btn green" id="btnSug" style="justify-self:start">Einreichen</button>
+    ${S.suggestions.length?`<span class="label">Deine Einreichungen</span><div style="display:grid;gap:10px">${S.suggestions.map(x=>`<div class="tile c1" style="cursor:default;padding:12px 14px"><span class="s" style="color:var(--ink);word-break:break-all">${x.url}</span><span class="s">${SUGGEST_TYPES[x.type]}${x.note?` · ${x.note}`:""} · <b>${x.status}, wird geprüft</b></span></div>`).join("")}</div>`:""}`;
+  let type="product"; el.querySelectorAll("#sugType button").forEach(b=>b.onclick=()=>{ type=b.dataset.t; el.querySelectorAll("#sugType button").forEach(x=>x.setAttribute("aria-pressed",x===b)); });
+  $("#btnSug").onclick=()=>addSuggestion($("#sugUrl").value,type,$("#sugNote").value);
+}
+function renderTrendRow(){
+  const el=$("#trendRow"); if(!el) return; const act=S.activeTrend;
+  el.innerHTML=act?`<div class="tile c3" style="cursor:default;padding:12px 14px"><span class="t">🔥 Trend aktiv: ${act.name}</span><span class="s">×${TREND.bonus} Follower auf Story oder Reel${gameH(Date.now()-act.pickedAt)>TREND.freshH?` · schon ${gameClock(Date.now()-act.pickedAt)} alt, Risiko zu spät`:""}</span><button class="btn ghost" id="btnTrendOff" style="padding:4px 0">Ohne Trend produzieren</button></div>`
+    :`<button class="btn ghost" data-goto="trends" style="justify-self:start">🔥 Trend aufgreifen für ×${TREND.bonus} Follower</button>`;
+  const off=$("#btnTrendOff"); if(off) off.onclick=()=>{ log("trend.drop",{id:act.id}); S.activeTrend=null; save(); renderContent(); };
+}
 function renderEvents(){
   const el=$("#events"); if(!el) return;
   el.innerHTML=EVENTS.map(e=>{ const okF=S.followers>=e.minFollowers,okL=S.level>=e.minLevel,done=S.eventsDone[e.id],badge=S.badges.includes(e.id),fit=e.niche===S.arch;
@@ -644,7 +731,7 @@ function renderNews(){
   el.querySelectorAll("button[data-n]").forEach(b=>b.onclick=()=>newsAct(NEWS.find(n=>n.id===b.dataset.n),b.dataset.m));
 }
 function renderRank(){
-  renderEvents(); renderNews();
+  renderIdols(); renderTrends(); renderSuggest(); renderEvents(); renderNews();
   const rows=ranking(); const el=$("#lb"); if(!el) return;
   el.innerHTML=rows.map((r,i)=>`<div class="lbrow ${r.me?"me":""}"><span class="rank">${i<3?["🥇","🥈","🥉"][i]:i+1}</span><span class="nm">${r.me?"Du · ":""}${r.name}<small>${ARCHETYPES[r.niche].em} ${ARCHETYPES[r.niche].name} · Lv ${r.lv}</small></span><span class="val">${fmt(r.f)}<small>Follower</small></span>${r.me?"":`<button class="btn sec cbtn" data-collab="${r.name}">🤝 Collab</button>`}</div>`).join("");
   el.querySelectorAll("[data-collab]").forEach(b=>b.onclick=()=>{ S.collabPick=b.dataset.collab; log("collab.preview",{partner:S.collabPick}); renderCollab(); $("#collabPanel").scrollIntoView({behavior:"smooth",block:"start"}); });
@@ -675,7 +762,7 @@ function drawScene(){
     const tag=isBusy?(done?"Fertig! Abholen":"läuft…"):locked?`${h.tag} (Lv ${KINDS[k].minLevel})`:h.tag;
     return `<button class="${cls}" data-i="${i}" style="left:${h.x}%;top:${h.y}%" aria-label="${h.tag||'Mochi'}"><span class="dot"><span>${h.em}</span></span><span class="tag">${tag}</span></button>`;
   }).join("");
-  $("#scene").innerHTML=`<div class="fallback">${st.name}</div><img src="${st.img}" alt="Isometrisches Studio, Stufe ${stage()}: ${st.name}" onerror="this.remove()">${hots}<span class="pill acc stage">${st.name} · Stufe ${stage()}/3</span>`;
+  $("#scene").innerHTML=`<div class="fallback">${st.name}</div><img src="${st.img}" alt="Isometrisches Studio, Stufe ${stage()}: ${st.name}" onerror="this.remove()">${hots}<span class="pill acc stage">${st.name} · Stufe ${stage()}/3</span>${S.idols.length?`<button class="pill" data-goto="idols" style="position:absolute;right:12px;top:12px;z-index:3;box-shadow:0 2px 0 rgba(0,0,0,.25)">🖼️ Wand: ${S.idols.slice(0,2).map(i=>"@"+i.handle).join(", ")}${S.idols.length>2?` +${S.idols.length-2}`:""}</button>`:`<button class="pill" data-goto="idols" style="position:absolute;right:12px;top:12px;z-index:3;box-shadow:0 2px 0 rgba(0,0,0,.25)">🖼️ Vorbild an die Wand</button>`}`;
   $("#scene").querySelectorAll(".hot").forEach(b=>b.onclick=()=>hotClick(st.hots[+b.dataset.i]));
   $("#sceneHint").textContent = j?(done?"Deine Produktion ist fertig. Tipp auf die Station oder hol sie unten ab.":"Produktion läuft. Tipp auf andere Stationen, um weiterzuplanen."):"Tippe auf eine Station im Raum.";
   tick();
@@ -718,7 +805,7 @@ function tick(){
   if(left===0&&!$("#btnClaim")){ renderQueue(); drawScene(); markBadge(); }
 }
 function slowTick(){ if(!S) return; const hadFood=!!S.food; syncEnergy(); $("#rEnergy").textContent=Math.floor(S.energy);
-  if(!$("#v-studio").hidden) renderDaily(); if(!$("#v-rank").hidden) renderRank(); markWorld(); if(!$("#v-contracts").hidden&&(S.ownBrand||Object.keys(S.exclusive).length)&&!$("#ownBrandCard").contains(document.activeElement)&&!($("#brandName")&&$("#brandName").value)) renderContracts();
+  if(!$("#v-studio").hidden) renderDaily(); if(!$("#v-rank").hidden&&!$("#v-rank").contains(document.activeElement)) { renderEvents(); renderNews(); const rows=ranking(); if($("#lb")&&!S.collabPick) renderRank(); } markWorld(); if(!$("#v-contracts").hidden&&(S.ownBrand||Object.keys(S.exclusive).length)&&!$("#ownBrandCard").contains(document.activeElement)&&!($("#brandName")&&$("#brandName").value)) renderContracts();
   if(hadFood&&!S.food) save(); }
 function markWorld(){ const b=document.querySelector('nav [data-view="rank"]'); const open=activeNews().some(n=>!S.newsDone[n.id]); if(open){ if(!b.querySelector(".badge")) b.insertAdjacentHTML("beforeend",'<span class="badge"></span>'); } else b.querySelector(".badge")?.remove(); }
 function markBadge(){ markWorld(); const b=document.querySelector('nav [data-view="studio"]'); if(S.job&&Date.now()>=S.job.completesAt){ if(!b.querySelector(".badge")) b.insertAdjacentHTML("beforeend",'<span class="badge"></span>'); } else b.querySelector(".badge")?.remove(); }
@@ -746,6 +833,7 @@ function renderContent(){
   syncEnergy(); if(S.job) why="Slot belegt. Warte auf die laufende Produktion."; else if(S.credits<k.cost) why=`Dir fehlen ${fmt(k.cost-S.credits)} Credits.`; else if(S.energy<k.energy) why=`Zu wenig Energie (${Math.floor(S.energy)}/${k.energy}). Essen, Booster oder Call im Studio.`; else if(c&&S.kind!=="reel") why=`Vertrag mit ${c.brand} verlangt ein Reel.`;
   if(!why&&pe&&S.kind!=="reel") why=`Event ${pe.title} verlangt ein Reel.`;
   btn.disabled=!!why; btn.textContent=pe&&S.kind==="reel"?`Event-Reel: ${pe.title}`:c&&S.kind==="reel"?`Reel für ${c.brand} starten`:`${k.name} starten`; $("#produceWhy").textContent=why||(pe?"Event-Modus aktiv. Abbrechen über den Tab Welt.":"");
+  renderTrendRow();
   btn.onclick=()=>{ const evId=pe&&S.kind==="reel"?pe.id:null; S.pendingEvent=null; startProduction(S.kind,S.strategy,!evId&&c&&S.kind==="reel"?c.id:null,evId); };
 }
 function renderContracts(){
@@ -808,6 +896,7 @@ function show(view){
   document.querySelector("nav").hidden=view==="onboard"; if(S) log("view."+view); $("main").scrollTop=0;
 }
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.view));
+document.addEventListener("click",e=>{ const g=e.target.closest("[data-goto]"); if(!g) return; show("rank"); const id={suggest:"suggestCard",trends:"trendsCard",idols:"idolsCard"}[g.dataset.goto]; setTimeout(()=>$("#"+id)?.scrollIntoView({behavior:"smooth",block:"start"}),50); });
 
 /* ---------- Onboarding ---------- */
 let pickedArch="gaming";
@@ -815,12 +904,18 @@ function renderArchetypes(){
   $("#archetypes").innerHTML=Object.entries(ARCHETYPES).map(([k,a])=>`<button class="tile ${a.tile}" data-a="${k}" aria-pressed="${pickedArch===k}"><span class="em">${a.em}</span><span class="t">${a.name}</span><span class="r">${a.trait}</span><span class="s">Reach ${a.reach} · Engagement ${a.engagement} · Creativity ${a.creativity}</span></button>`).join("");
   $("#archetypes").querySelectorAll(".tile").forEach(b=>b.onclick=()=>{pickedArch=b.dataset.a;renderArchetypes();});
 }
-$("#btnStart").onclick=()=>{ const name=$("#cName").value.trim()||"Nova"; S=fresh(name,pickedArch); log("onboard.done",{name,arch:pickedArch}); save(); renderAll(); show("studio"); toast("Willkommen in deinem Zimmer. Tipp auf das Setup für deine erste Story."); };
+let idolPlat0="TikTok"; document.querySelectorAll("#idolPlatform0 button").forEach(b=>b.onclick=()=>{ idolPlat0=b.dataset.p; document.querySelectorAll("#idolPlatform0 button").forEach(x=>x.setAttribute("aria-pressed",x===b)); });
+$("#btnStart").onclick=()=>{ if(!$("#consent").checked){ toast("Bitte die Einwilligung bestätigen, sonst können wir den Test nicht auswerten."); $("#consent").focus(); return; }
+  const name=$("#cName").value.trim()||"Nova"; S=fresh(name,pickedArch); S.consent=true; log("onboard.done",{name,arch:pickedArch,consent:true});
+  const h=$("#idol0").value.trim().replace(/^@+/,""); if(h){ S.idols.push({handle:h,platform:idolPlat0,why:"",at:new Date().toISOString()}); log("idol.add",{handle:h,platform:idolPlat0,source:"onboarding"}); }
+  save(); renderAll(); show("studio"); toast("Willkommen in deinem Zimmer. Tipp auf das Setup für deine erste Story."); };
 
 /* ---------- Test panel ---------- */
 document.querySelectorAll("[data-q]").forEach(g=>g.querySelectorAll("button").forEach(b=>b.onclick=()=>{ g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); S.answers[g.dataset.q]=b.textContent; save(); }));
-$("#btnSubmit").onclick=()=>{ S.answers.loop=$("#qLoop").value.trim(); log("survey.submit",{...S.answers,notifyWanted:S.notifyAnswer,minutesPlayed:Math.round((Date.now()-S.created)/60000)}); toast("Gespeichert. Jetzt Protokoll kopieren."); };
-$("#btnCopyLog").onclick=async()=>{ const text=JSON.stringify({prototype:"creator-empire-v2",creator:S.name,niche:S.arch,level:S.level,followers:S.followers,credits:S.credits,upgrades:S.upgrades,answers:S.answers,notifyWanted:S.notifyAnswer,log:S.log},null,2);
+$("#btnSubmit").onclick=()=>{ S.answers.loop=$("#qLoop").value.trim(); S.answers.mustHaveBrands=$("#qBrands").value.trim(); log("survey.submit",{...S.answers,notifyWanted:S.notifyAnswer,minutesPlayed:Math.round((Date.now()-S.created)/60000)}); toast("Gespeichert. Jetzt Protokoll kopieren."); };
+$("#btnCopyLog").onclick=async()=>{ const text=JSON.stringify({prototype:"creator-empire-v5",consent:S.consent,creator:S.name,niche:S.arch,level:S.level,followers:S.followers,credits:S.credits,upgrades:S.upgrades,classes:S.classes,
+    research:{idols:S.idols,trends:S.myTrends,trendsPicked:S.log.filter(l=>l.ev==="trend.pick").map(l=>({name:l.name,mine:l.mine})),suggestions:S.suggestions,brandsAccepted:S.log.filter(l=>l.ev==="contract.accept").map(l=>l.id),eventsEntered:Object.keys(S.eventsDone),newsReactions:S.newsDone},
+    answers:S.answers,notifyWanted:S.notifyAnswer,log:S.log},null,2);
   try{ await navigator.clipboard.writeText(text); toast("Protokoll in der Zwischenablage."); }catch(e){ const r=document.createRange(); r.selectNodeContents($("#log")); const sel=getSelection(); sel.removeAllRanges(); sel.addRange(r); toast("Kopieren blockiert. Text ist markiert: jetzt Strg+C."); } };
 let resetArmed=false;
 $("#btnReset").onclick=()=>{ if(!resetArmed){ resetArmed=true; $("#btnReset").textContent="Wirklich zurücksetzen?"; setTimeout(()=>{resetArmed=false;$("#btnReset").textContent="Prototyp zurücksetzen";},3000); return; } try{ localStorage.removeItem(KEY); }catch(e){} S=null; location.reload(); };

@@ -7,12 +7,13 @@ und können den Loop erklären. Sonst Loop überarbeiten, kein Produktcode.
 
 | Paket | Status | Ergebnis / Ort |
 |---|---|---|
-| Klickprototyp | **fertig (v3: Renders, Alltag, Brands, Events, News, Rangliste)** | `prototype/index.html`, veröffentlicht: https://claude.ai/artifact/K6wMyGvMkDzzJK25nXi5cV |
+| Klickprototyp | **fertig (v5: + Energie, Classes, Collabs, Vorbilder, Trends, Link-Einreichung, Einwilligung)** | `prototype/index.html`, veröffentlicht: https://claude.ai/artifact/K6wMyGvMkDzzJK25nXi5cV |
 | Interviewleitfaden | fertig | `docs/phase-0/INTERVIEW-LEITFADEN.md` |
 | Namenscheck Vorprüfung | fertig | `docs/phase-0/NAMENSCHECK.md`, Registerrecherche offen |
 | 10 Interviews | offen | Rekrutierung starten |
 | Rechtliche Erstberatung (Jugendschutz, DSGVO, Eventnennung, Markennähe) | offen | Termin buchen |
 | Entscheidungsdokument (Zielgruppe, Anhang-B-Fragen) | Vorschlag liegt vor | `docs/STRATEGIE.md` Abschnitt 7, Beschluss offen |
+| Datenkonzept Phase 0 | fertig | `docs/phase-0/DATEN.md` |
 
 ## Was der Prototyp testet
 
@@ -23,23 +24,24 @@ und können den Loop erklären. Sonst Loop überarbeiten, kein Produktcode.
 | H3 Echte Brand-Events erhöhen Relevanz | Event Hub mit Beispiel-Eventkarten (FIBO, gamescom, Fashion Week), reale Markennamen als Platzhalter in Verträgen, Branchen-News mit Reaktion | Klicks auf Events/News im Log, Frage 4 |
 | H4 Asynchrones Spielen mit Freunden | Rangliste mit simulierten Mitspielern, Call mit Friend | Beobachtung, Gesprächsfrage |
 | H5 B2B-Mehrwert für Brands | **nicht in Phase 0** | später |
+| **H6 (neu) Spieler teilen, wem sie real folgen und was sie vermissen** | Vorbilder, Trends, Link-Einreichung, Fragen 5 und 6 | `research`-Block im Export, siehe DATEN.md |
 
 Bewusst nicht im Prototyp: 3D, Server, Login, echte Mitspieler, Agentur, Quellenprüfung der Eventkarten.
 
 ## Interviewprotokolle
 
-| Nr. | Datum | Gruppe | Zeit bis 1. Produktion | Benachrichtigung? | Frage 1 (1–5) | Loop erklärt? | Upgrade bemerkt? | Frage 4 (1–5) | Zahlen für | Stärkstes Zitat |
-|---|---|---|---|---|---|---|---|---|---|---|
-| 1 | | | | | | | | | | |
-| 2 | | | | | | | | | | |
-| 3 | | | | | | | | | | |
-| 4 | | | | | | | | | | |
-| 5 | | | | | | | | | | |
-| 6 | | | | | | | | | | |
-| 7 | | | | | | | | | | |
-| 8 | | | | | | | | | | |
-| 9 | | | | | | | | | | |
-| 10 | | | | | | | | | | |
+| Nr. | Datum | Gruppe | Zeit bis 1. Produktion | Benachrichtigung? | Frage 1 (1–5) | Loop erklärt? | Upgrade bemerkt? | Frage 4 (1–5) | Zahlen für | Vorbilder (Anzahl) | Trends / Links | Stärkstes Zitat |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | | | | | | | | | | | | |
+| 2 | | | | | | | | | | | | |
+| 3 | | | | | | | | | | | | |
+| 4 | | | | | | | | | | | | |
+| 5 | | | | | | | | | | | | |
+| 6 | | | | | | | | | | | | |
+| 7 | | | | | | | | | | | | |
+| 8 | | | | | | | | | | | | |
+| 9 | | | | | | | | | | | | |
+| 10 | | | | | | | | | | | | |
 
 ## Auswertung (nach 10 Interviews ausfüllen)
 

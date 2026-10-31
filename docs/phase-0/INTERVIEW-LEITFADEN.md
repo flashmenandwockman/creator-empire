@@ -40,6 +40,10 @@ Bei Blockade länger als 60 Sekunden: einen Hinweis geben, notieren.
 - Stell dir vor, es gäbe eine Challenge zu einem echten Marken-Event, z. B. einer Messe oder einem Produktlaunch. Interessiert dich das, oder ist dir egal, ob die Marke echt ist?
 - Wofür würdest du in so einem Spiel Geld ausgeben? Für nichts, für Outfits, für schnellere Timer?
 - Würdest du das mit Freunden spielen? Wie: gegeneinander, zusammen, gar nicht?
+- Du hast ein Vorbild an die Wand gehängt. Warum genau diese Person? Was macht sie, das du auch willst?
+- Wenn dein Vorbild offiziell im Spiel wäre, mit eigener Mission oder Challenge: Würdest du das spielen? Was müsste es dir bringen?
+- Welchen Trend hast du heute auf deinem Feed gesehen, der ins Spiel gehört?
+- Was fehlt im Spiel komplett? Ein Produkt, eine Brand, ein Event, ein Format? (Teilnehmer soll den Link direkt einreichen.)
 
 ### 4. Fragebogen im Prototyp (3 Min)
 Teilnehmer füllt den Tab „Test" selbst aus, dann „Protokoll kopieren" und an den Interviewer senden.
@@ -56,6 +60,9 @@ Pro Interview ein Eintrag in `TRACKING.md`. Zählmetriken:
 | Zeit bis erste Produktion ohne Hilfe | Log: onboard.done → production.start | Median unter 90 Sekunden |
 | Upgrade bemerkt und positiv | Beobachtung | Mind. 5 von 10 |
 | Interesse an echten Brand-Events | Frage 4 | Information, keine Schwelle |
+| Vorbilder eingetragen | research.idols | Mind. 8 von 10 mit mindestens einem |
+| Trend oder Link eingereicht | research.trends, research.suggestions | Mind. 5 von 10 |
+| Würde echten Creatorn im Spiel folgen | Frage 5 | Information, Priorität für Kooperationen |
 
 Wird die Rückkehr-Schwelle verfehlt, wird der Loop überarbeitet, nicht die Schwelle.
 
