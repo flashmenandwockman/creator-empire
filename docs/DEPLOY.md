@@ -5,6 +5,18 @@
 Der Prototyp ist eine HTML-Datei plus drei Bilder. Kein Server, keine Datenbank. `prototype/build.sh`
 ergänzt den HTML-Rahmen und schreibt alles nach `prototype/dist/`.
 
+### Variante A0: ohne CLI, per Skript (auch aus einer Claude-Session)
+
+Personal Access Token in Netlify erzeugen (User settings → Applications → Personal access tokens)
+und als `NETLIFY_AUTH_TOKEN` hinterlegen. Dann:
+
+```bash
+bash scripts/deploy-netlify.sh
+```
+
+Legt die Site `creator-empire-proto` an, falls sie fehlt, baut und lädt `prototype/dist` als Zip
+über die Netlify-API hoch. Braucht nur curl, zip und python3.
+
 ### Variante A: sofort per CLI (wie bei 321.live)
 
 ```bash
