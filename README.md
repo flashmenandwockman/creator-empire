@@ -7,6 +7,8 @@ asynchrone Challenges. Arbeitsname, Marken- und Domainrecherche steht noch aus.
 
 **Status:** Phase 0 (Validierung). Klickprototyp fertig, Interviews offen. Noch kein Produktcode.
 
+**Prototyp veröffentlichen:** [Mit Netlify aus diesem Repo deployen](https://app.netlify.com/start/repos) (GitHub wählen, `creator-empire`, Deploy; Einstellungen kommen aus `netlify.toml`) oder `prototype/dist` nach dem Build auf [Netlify Drop](https://app.netlify.com/drop) ziehen.
+
 ## Dokumente
 
 | Datei | Inhalt |
