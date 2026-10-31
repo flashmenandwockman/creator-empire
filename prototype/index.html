@@ -32,18 +32,19 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .brand{font-family:var(--display);font-size:1rem;color:#fff;margin-right:auto;white-space:nowrap;text-shadow:0 2px 0 rgba(0,0,0,.35);min-width:0;overflow:hidden;text-overflow:ellipsis}
 .res{display:flex;align-items:center;gap:6px;background:#fff;color:var(--ink);border-radius:999px;padding:4px 10px 4px 6px;font-size:.85rem;font-weight:800;white-space:nowrap;flex:none;box-shadow:0 2px 0 rgba(0,0,0,.25)}
 .res .ic{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:.7rem;color:#fff;background:var(--accent)}
-.res.f .ic{background:var(--pink)}.res.l .ic{background:var(--blue)}
+.res.f .ic{background:var(--pink)}.res.l .ic{background:var(--blue)}.res.e .ic{background:var(--green)}
 .xpbar{height:6px;background:rgba(255,255,255,.2);border-radius:3px;overflow:hidden;max-width:720px;margin:8px auto 0}
 .xpbar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--accent));width:0;transition:width .4s}
 @media (max-width:480px){.brand{font-size:0;width:30px;height:30px;border-radius:9px;background:var(--accent);flex:none;box-shadow:0 2px 0 rgba(0,0,0,.25)}.brand::after{content:"CE";font-size:.8rem;color:#fff;display:grid;place-items:center;height:100%}.res{font-size:.78rem;padding:3px 8px 3px 5px}}
 
 /* Main */
-main{flex:1;overflow-y:auto;padding-block:14px 24px}
-.wrap{max-width:720px;margin:0 auto;display:grid;gap:14px}
+main{flex:1;overflow-y:auto;padding-block:18px 32px}
+.wrap{max-width:720px;margin:0 auto;display:grid;gap:22px}
 .view[hidden]{display:none}
-.card{background:var(--card);border-radius:20px;padding:16px;display:grid;gap:12px;min-width:0;box-shadow:0 6px 0 rgba(0,0,0,.18)}
+.card{background:var(--card);border-radius:22px;padding:22px 20px;display:grid;gap:16px;min-width:0;box-shadow:0 6px 0 rgba(0,0,0,.18)}
+@media (min-width:600px){.card{padding:26px 26px}}
 .card.tint-mint{background:var(--mint)}.card.tint-peach{background:var(--peach)}.card.tint-lilac{background:var(--lilac)}
-.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px 26px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 18px;border-radius:14px;background:var(--accent);color:#fff;font-family:var(--display);font-size:1.05rem;letter-spacing:.02em;box-shadow:0 4px 0 #c75a1a;transition:transform .08s,box-shadow .08s;text-shadow:0 1px 0 rgba(0,0,0,.25)}
 .btn:active{transform:translateY(3px);box-shadow:0 1px 0 #c75a1a}
 .btn.green{background:var(--green);box-shadow:0 4px 0 #22924a}.btn.green:active{box-shadow:0 1px 0 #22924a}
@@ -83,7 +84,8 @@ main{flex:1;overflow-y:auto;padding-block:14px 24px}
 .hint{font-size:.82rem;color:#dbe6ff;text-align:center;font-weight:700}
 
 /* Option tiles */
-.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media (min-width:600px){.tiles.three{grid-template-columns:repeat(3,1fr)}}
 .tile{display:grid;gap:4px;justify-items:start;text-align:left;padding:12px;border-radius:16px;background:var(--card-2);border:3px solid transparent;min-width:0}
 .tile .em{font-size:1.8rem;line-height:1}
 .tile .t{font-family:var(--display);font-size:1rem}
@@ -95,6 +97,7 @@ main{flex:1;overflow-y:auto;padding-block:14px 24px}
 .seg{display:flex;gap:6px;flex-wrap:wrap}
 .seg button{flex:1;min-width:88px;padding:10px;border-radius:12px;background:var(--card-2);font-weight:800;font-size:.85rem;border:3px solid transparent}
 .seg button[aria-pressed="true"]{border-color:var(--accent);background:#fff}
+.seg button small{display:block;font-size:.68rem;color:var(--ink-2);font-weight:700;margin-top:2px}
 .forecast{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
 .forecast b{display:block;font-family:var(--display);font-size:1.15rem;font-weight:400}
 .band{position:relative;height:10px;border-radius:5px;background:var(--line);overflow:hidden}
@@ -103,6 +106,19 @@ main{flex:1;overflow-y:auto;padding-block:14px 24px}
 .opt[aria-pressed="true"]{border-color:var(--accent);background:#fff}
 .opt .t{font-family:var(--display)}.opt .s{font-size:.78rem;color:var(--ink-2);grid-column:1/-1;font-weight:700}.opt .r{font-weight:800;font-size:.8rem;color:#9a4b00;align-self:start}
 
+/* Leaderboard */
+.lb{display:grid;gap:10px}
+.lbrow{display:grid;grid-template-columns:36px 1fr auto;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;background:var(--card-2);border:3px solid transparent}
+.lbrow.me{background:var(--peach);border-color:var(--accent)}
+.lbrow .rank{font-family:var(--display);font-size:1.3rem;text-align:center}
+.lbrow .nm{font-weight:800;display:flex;gap:8px;align-items:center;flex-wrap:wrap;min-width:0}
+.lbrow .nm small{font-weight:700;color:var(--ink-2);font-size:.75rem}
+.lbrow .val{font-family:var(--display);font-size:1.05rem;white-space:nowrap}
+.lbrow .val small{display:block;font-family:var(--body);font-weight:800;font-size:.7rem;color:var(--ink-2);text-align:right}
+.ebar{height:10px;border-radius:5px;background:var(--line);overflow:hidden}.ebar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),#9be58a);transition:width .5s}
+.cool{font-size:.75rem;font-weight:800;color:var(--ink-2)}
+.tile .btnline{display:flex;justify-content:space-between;align-items:center;width:100%;gap:8px;margin-top:4px}
+.tile[disabled]{opacity:.55;cursor:not-allowed}
 /* Queue */
 .timer{font-family:var(--display);font-size:2.4rem;line-height:1;font-variant-numeric:tabular-nums}
 .prog{height:12px;background:var(--line);border-radius:6px;overflow:hidden}
@@ -150,6 +166,7 @@ nav button .badge{position:absolute;top:6px;right:calc(50% - 20px);width:10px;he
     <span class="brand">CREATOR EMPIRE</span>
     <span class="res" title="Credits"><span class="ic">$</span><b id="rCredits">500</b></span>
     <span class="res f" title="Follower"><span class="ic">♥</span><b id="rFollowers">0</b></span>
+    <span class="res e" title="Energie"><span class="ic">⚡</span><b id="rEnergy">100</b></span>
     <span class="res l" title="Level"><span class="ic">★</span><b id="rLevel">Lv 1</b></span>
   </div>
   <div class="xpbar" aria-hidden="true"><i id="xpFill"></i></div>
@@ -177,6 +194,7 @@ nav button .badge{position:absolute;top:6px;right:calc(50% - 20px);width:10px;he
   <div class="scene" id="scene"></div>
   <p class="hint" id="sceneHint">Tippe auf eine Station im Raum.</p>
   <div class="card" id="queueCard"></div>
+  <div class="card" id="dailyCard"></div>
   <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
       <h2 id="creatorName">Creator</h2><span class="pill acc" id="creatorNiche">Nische</span>
@@ -217,10 +235,39 @@ nav button .badge{position:absolute;top:6px;right:calc(50% - 20px);width:10px;he
 <section class="view" id="v-contracts" hidden>
   <div class="card tint-lilac">
     <span class="label">Vertragsmarkt</span>
-    <h2>Fiktive Brand-Verträge</h2>
-    <p class="muted" style="font-weight:700">Alle Marken sind erfunden. Ein Vertrag ist ein Reel mit Briefing: mehr Credits und Reputation, aber nur, wenn du die Voraussetzungen erfüllst.</p>
+    <h2>Brand-Verträge</h2>
+    <p class="muted" style="font-weight:700">Ein Vertrag ist ein Reel mit Briefing: mehr Credits und Reputation. Wer mit einer Brand abschließt, ist 24 Stunden exklusiv an sie gebunden. Konkurrenten derselben Kategorie sind so lange gesperrt. Jeder weitere Abschluss hebt dein Partner-Level und die Gage.</p>
+    <p class="notice">Reale Markennamen dienen im Prototyp nur als Beispiel für die Spielmechanik. Keine Partnerschaft, keine Logos, keine Aussagen über die Unternehmen.</p>
+    <div id="exclusiveInfo"></div>
   </div>
-  <div id="contracts" style="display:grid;gap:12px"></div>
+  <div id="contracts" style="display:grid;gap:22px"></div>
+  <div class="card tint-peach" id="ownBrandCard"></div>
+</section>
+
+<section class="view" id="v-rank" hidden>
+  <div class="card tint-lilac">
+    <span class="label">Event Hub</span>
+    <h2>Markenevents</h2>
+    <p class="muted" style="font-weight:700">Öffentliche Events der Branche als Eventkarte. Dazu eine unabhängige Spiel-Mission: ein Event-Reel mit höherer Gage, Reputation und Hype. Mitmachen darf nur, wer genug Follower hat.</p>
+    <p class="notice">Eventkarten im Prototyp sind Beispiele ohne Quellenprüfung. Im Spiel werden sie redaktionell geprüft, mit Quell-Link und Datum versehen und als unabhängige, fiktive Challenge gekennzeichnet.</p>
+  </div>
+  <div id="events" style="display:grid;gap:22px"></div>
+  <div class="card">
+    <span class="label">Branchen-News</span>
+    <h2>Was gerade passiert</h2>
+    <p class="muted" style="font-weight:700">Neue Meldungen aus deiner Nische tauchen über den Tag auf. Du kannst laut reagieren (hohe Chance, hohes Risiko), sachlich einordnen (kleiner, sicherer Gewinn) oder es lassen. Jede Meldung verfällt nach 6 Stunden.</p>
+    <div id="news" style="display:grid;gap:12px"></div>
+  </div>
+  <div class="card">
+    <span class="label">Wochenranking · Liga Newcomer</span>
+    <h2>Rangliste</h2>
+    <p class="muted" style="font-weight:700">Gewertet werden Follower dieser Woche. Die anderen Spieler sind im Prototyp simuliert und wachsen in Echtzeit weiter, auch wenn du weg bist.</p>
+    <div class="lb" id="lb"></div>
+  </div>
+  <div class="card tint-lilac">
+    <h3>Belohnung am Wochenende</h3>
+    <p class="muted" style="font-weight:700">Platz 1–3 bekommen ein kosmetisches Abzeichen fürs Profil und +10 Reputation. Keine Credits, keine Vorteile im Spiel. Im Prototyp endet die Woche nicht.</p>
+  </div>
 </section>
 
 <section class="view" id="v-test" hidden>
@@ -255,7 +302,8 @@ nav button .badge{position:absolute;top:6px;right:calc(50% - 20px);width:10px;he
   <div class="row">
     <button data-view="studio" aria-current="page"><span class="ic">🏠</span>Studio</button>
     <button data-view="content"><span class="ic">🎬</span>Content</button>
-    <button data-view="contracts"><span class="ic">🤝</span>Verträge</button>
+    <button data-view="contracts"><span class="ic">🤝</span>Brands</button>
+    <button data-view="rank"><span class="ic">🌍</span>Welt</button>
     <button data-view="test"><span class="ic">📋</span>Test</button>
   </div>
 </nav>
@@ -282,11 +330,11 @@ nav button .badge{position:absolute;top:6px;right:calc(50% - 20px);width:10px;he
 /* ---------- Economy (docs/ECONOMY.md) ---------- */
 const TIME_SCALE = 240*60*1000 / 45000; // 4h -> 45s
 const KINDS = {
-  story:{name:"Story",base:30,cost:40,xp:30,followers:90,credits:60,minLevel:1,em:"📱",tile:"c1"},
-  reel: {name:"Reel",base:240,cost:180,xp:150,followers:850,credits:260,minLevel:1,em:"🎥",tile:"c2"},
-  live: {name:"Livestream",base:360,cost:300,xp:250,followers:1250,credits:420,minLevel:5,em:"🎙️",tile:"c3"},
-  longf:{name:"Longform-Video",base:720,cost:550,xp:450,followers:2500,credits:800,minLevel:8,em:"🖥️",tile:"c4"},
-  free: {name:"Spontan-Story",base:20,cost:0,xp:15,followers:40,credits:30,minLevel:1,em:"⚡",free:true},
+  story:{name:"Story",base:30,cost:40,energy:10,xp:30,followers:90,credits:60,minLevel:1,em:"📱",tile:"c1"},
+  reel: {name:"Reel",base:240,cost:180,energy:25,xp:150,followers:850,credits:260,minLevel:1,em:"🎥",tile:"c2"},
+  live: {name:"Livestream",base:360,cost:300,energy:35,xp:250,followers:1250,credits:420,minLevel:5,em:"🎙️",tile:"c3"},
+  longf:{name:"Longform-Video",base:720,cost:550,energy:50,xp:450,followers:2500,credits:800,minLevel:8,em:"🖥️",tile:"c4"},
+  free: {name:"Spontan-Story",base:20,cost:0,energy:0,xp:15,followers:40,credits:30,minLevel:1,em:"⚡",free:true},
 };
 const STRATS = {
   safe:{name:"Sicher",bonus:0,variance:8,desc:"Kleiner Bonus, kleine Schwankung. Planbar."},
@@ -302,12 +350,54 @@ const UPGRADES = [
   {key:"light",name:"Studio-Umbau: Softboxen + Kamera",cost:400,qual:4,desc:"Dauer −6 %, Qualität +4. Aus dem Zimmer wird ein Aufnahmestudio mit Set, Stativ und Licht."},
   {key:"edit",name:"Profi-Ausbau: Editing-Suite",cost:900,qual:4,desc:"Dauer weitere −6 %, Qualität +4. Drei Monitore, Equipment-Regal, Pegboard. Schaltet Longform frei (ab Lv 8)."},
 ];
+const CATS = {nutrition:{name:"Nutrition",em:"🥤"},fashion:{name:"Fashion",em:"👕"},gaming:{name:"Gaming-Hardware",em:"🖱️"},beverage:{name:"Getränke",em:"🧃"}};
 const CONTRACTS = [
-  {id:"nova",brand:"NOVA Hydration",niche:"fitness",title:"Morgenroutine-Reel",minFollowers:800,minLevel:2,reward:380,rep:10,brief:"Zeig deine Morgenroutine mit einer NOVA-Flasche im Bild. Ton: energisch, ehrlich.",risk:"niedrig",tile:"c3"},
-  {id:"pixl",brand:"PIXL Peripherals",niche:"gaming",title:"Setup-Tour",minFollowers:1500,minLevel:3,reward:620,rep:15,brief:"Ein Reel über dein Setup. PIXL-Maus muss 3 Sekunden sichtbar sein.",risk:"mittel",tile:"c4"},
-  {id:"velm",brand:"VELMA Studio",niche:"fashion",title:"Outfit-Transition",minFollowers:1200,minLevel:3,reward:540,rep:12,brief:"Drei Outfits, ein Schnitt. VELMA stellt die Looks.",risk:"mittel",tile:"c2"},
+  {id:"more",brand:"More Nutrition",real:true,cat:"nutrition",niche:"fitness",title:"Chunky-Flavour-Testing",minFollowers:800,minLevel:2,reward:420,rep:12,brief:"Probier drei Sorten vor der Kamera und sag ehrlich, welche du nimmst. Produkt sichtbar, kein Skript.",risk:"niedrig",tile:"c3"},
+  {id:"nova",brand:"NOVA Hydration",real:false,cat:"nutrition",niche:"fitness",title:"Morgenroutine-Reel",minFollowers:600,minLevel:1,reward:300,rep:8,brief:"Zeig deine Morgenroutine mit einer NOVA-Flasche im Bild. Ton: energisch, ehrlich.",risk:"niedrig",tile:"c3"},
+  {id:"teveo",brand:"Teveo",real:true,cat:"fashion",niche:"fitness",title:"Leggings-Fit-Check",minFollowers:1200,minLevel:3,reward:560,rep:14,brief:"Ein Reel im Gym oder draußen. Drei Bewegungen, ein Schnitt, Fokus auf Passform.",risk:"mittel",tile:"c2"},
+  {id:"6pm",brand:"6PM",real:true,cat:"fashion",niche:"fashion",title:"Drop-Day-Outfit",minFollowers:1500,minLevel:3,reward:640,rep:15,brief:"Outfit-Transition zum Drop-Tag. Streetwear-Look, Nachtstimmung, schneller Beat.",risk:"mittel",tile:"c2"},
+  {id:"pixl",brand:"PIXL Peripherals",real:false,cat:"gaming",niche:"gaming",title:"Setup-Tour",minFollowers:1500,minLevel:3,reward:620,rep:15,brief:"Ein Reel über dein Setup. PIXL-Maus muss 3 Sekunden sichtbar sein.",risk:"mittel",tile:"c4"},
+];
+const EXCLUSIVE_HOURS = 24;   // Spielstunden Exklusivität nach Abschluss
+const OWN_BRAND = {minLevel:6,minRep:15,cost:1500};
+const DAILY = {
+  food:{name:"Essen bestellen",em:"🍜",cost:60,energy:35,delayMin:20,desc:"Lieferung in 20 Min. Danach +35 Energie."},
+  boost:{name:"Energy Booster",em:"⚡",cost:90,energy:50,cooldownMin:360,desc:"Sofort +50 Energie. Alle 6 Stunden."},
+  call:{name:"Call mit Friend",em:"📞",cost:0,energy:10,cooldownMin:480,inspire:4,desc:"Kostenlos. +10 Energie und +4 Inspiration auf die nächste Produktion. Alle 8 Stunden."},
+};
+const FRIENDS = [
+  ["Kaya","„Dein letztes Reel war gut, aber der Hook kam zu spät. Erste zwei Sekunden, Alter.“"],
+  ["Jonte","„Ich hab gestern 6PM angeschrieben. Mach du doch More Nutrition, dann sind wir kein Konkurrenz.“"],
+  ["Mila","„Pause machen zählt auch als Arbeit. Hab ich gelesen. Irgendwo.“"],
+  ["Deniz","„Wenn du Lv 6 bist, gründen wir eine eigene Brand. Ich hab schon einen Namen. Er ist schlecht.“"],
+  ["Sam","„Rangliste gecheckt? Du bist knapp hinter mir. Bleib da.“"],
+];
+const EVENTS = [
+  {id:"fibo",title:"FIBO Köln",cat:"nutrition",niche:"fitness",when:"April · Messe Köln",minFollowers:1500,minLevel:3,reward:700,rep:18,hype:30,brief:"Event-Reel von der Messe: drei Stände, ein Trend, deine Meinung. Produkt-Nennungen erlaubt, keine Fake-Partnerschaft.",tile:"c3"},
+  {id:"gamescom",title:"gamescom",cat:"gaming",niche:"gaming",when:"August · Koelnmesse",minFollowers:2500,minLevel:4,reward:900,rep:22,hype:40,brief:"Hands-on-Reel zu einem Spiel, das noch niemand hat. Hook in 2 Sekunden, sonst scrollt die Halle weiter.",tile:"c4"},
+  {id:"bfw",title:"Berlin Fashion Week",cat:"fashion",niche:"fashion",when:"Januar / Juli · Berlin",minFollowers:2000,minLevel:4,reward:800,rep:20,hype:35,brief:"Street-Style-Reel vor den Shows. Keine Backstage-Claims, kein Logo-Missbrauch.",tile:"c2"},
+  {id:"flavour",title:"Flavour-Launch-Woche (fiktiv)",cat:"nutrition",niche:"fitness",when:"Diese Woche · online",minFollowers:600,minLevel:2,reward:350,rep:10,hype:20,brief:"Einstiegs-Event: Teste einen neuen Geschmack und sag ehrlich, ob er was taugt.",tile:"c1"},
+];
+const EVENT_THRESHOLD = 60; // Score ab dem ein Event-Reel als Erfolg zählt
+const NEWS = [ // taucht gestaffelt auf: atHour = Spielstunden seit Start
+  {id:"n1",atHour:0,niche:"all",cat:"nutrition",head:"Supplement-Shop kürzt Creator-Provisionen um die Hälfte",body:"Ein großer Online-Shop halbiert die Affiliate-Sätze. Creator sind sauer, Kommentare laufen heiß.",react:{win:"Dein Rant trifft den Nerv. Reichweite explodiert.",lose:"Dein Rant wirkt wehleidig. Die Community dreht sich gegen dich.",p:.55,f:600,rep:-8},calm:{text:"Dein Erklär-Reel wird gespeichert und geteilt.",f:180,rep:3}},
+  {id:"n2",atHour:1.5,niche:"gaming",cat:"gaming",head:"Streaming-Plattform ändert Umsatzbeteiligung",body:"Neue Split-Regeln ab nächstem Monat. Große Streamer drohen mit Wechsel.",react:{win:"Dein Hot Take wird überall zitiert.",lose:"Du hast die Regeln falsch verstanden. Korrektur-Reel nötig.",p:.5,f:800,rep:-10},calm:{text:"Deine ruhige Einordnung bringt neue Follower, die bleiben.",f:220,rep:4}},
+  {id:"n3",atHour:3,niche:"fitness",cat:"nutrition",head:"Studie stellt beliebtes Workout-Format infrage",body:"Eine Meta-Analyse relativiert den Effekt kurzer HIIT-Sessions. Fitness-Creator streiten.",react:{win:"Du widersprichst mit Haltung. Die Fitness-Bubble feiert dich.",lose:"Du widersprichst ohne Quelle. Ein Sportwissenschaftler zerlegt dich öffentlich.",p:.45,f:700,rep:-9},calm:{text:"Du erklärst die Studie fair. Sauber.",f:200,rep:4}},
+  {id:"n4",atHour:4.5,niche:"fashion",cat:"fashion",head:"Streetwear-Label kündigt Überraschungs-Drop an",body:"Nur 24 Stunden, nur online. Alle machen Unboxings.",react:{win:"Dein Fit-Check ist unter den ersten. Massive Views.",lose:"Dein Reel kommt zu spät und sieht aus wie alle anderen.",p:.6,f:650,rep:-4},calm:{text:"Du machst ein ehrliches Preis-Leistungs-Reel. Kleine, treue Zuwächse.",f:170,rep:3}},
+  {id:"n5",atHour:6,niche:"all",cat:"beverage",head:"Energy-Drink-Marke löst Shitstorm mit Creator-Kampagne aus",body:"Eine Kampagne mit Minderjährigen als Zielgruppe wird scharf kritisiert.",react:{win:"Deine Kritik ist präzise und fair. Starker Reputationsgewinn.",lose:"Du springst auf, hast aber selbst mal für die Marke geworben. Screenshot-Alarm.",p:.5,f:500,rep:-12},calm:{text:"Du bleibst ruhig und sachlich. Marken merken sich das.",f:120,rep:6}},
+  {id:"n6",atHour:8,niche:"all",cat:"nutrition",head:"Plattform testet längere Reels bis 10 Minuten",body:"Longform im Kurzvideo-Format. Wer früh testet, bekommt Reichweiten-Boost, heißt es.",react:{win:"Dein 9-Minuten-Reel läuft. Algorithmus liebt dich.",lose:"Niemand schaut 9 Minuten. Watchtime im Keller.",p:.5,f:900,rep:-5},calm:{text:"Du testest 3 Minuten. Solide.",f:250,rep:2}},
+];
+const NEWS_TTL_H = 6;
+const BOTS = [
+  {name:"kaya.streams",niche:"gaming",base:2400,rate:180,lv:4},{name:"jonte.fit",niche:"fitness",base:1900,rate:220,lv:3},
+  {name:"MilaMakes",niche:"fashion",base:3100,rate:140,lv:5},{name:"deniz_dsgn",niche:"fashion",base:900,rate:260,lv:2},
+  {name:"sam.plays",niche:"gaming",base:600,rate:300,lv:2},{name:"lea_lifts",niche:"fitness",base:1400,rate:120,lv:3},
+  {name:"noah.edits",niche:"gaming",base:4200,rate:90,lv:6},{name:"aylin.ootd",niche:"fashion",base:300,rate:200,lv:1},
+  {name:"tomi_live",niche:"gaming",base:1100,rate:160,lv:2},
 ];
 const xpFor = n => Math.round(100*Math.pow(n,1.5));
+const gameH = ms => ms*TIME_SCALE/3600000;        // Realzeit-ms -> Spielstunden
+const realMs = gameMin => gameMin*60*1000/TIME_SCALE; // Spielminuten -> Realzeit-ms
 
 /* ---------- Scenes: image per stage + hotspots in percent of the 4:3 frame ---------- */
 const STAGES = {
@@ -334,12 +424,14 @@ const STAGES = {
 };
 
 /* ---------- State ---------- */
-const KEY="ce-proto-v2";
+const KEY="ce-proto-v3";
 let S = load() || null;
+if(S&&S.v!==3){ Object.assign(S,{v:3,energy:100,energyAt:Date.now(),food:null,boostAt:0,callAt:0,inspiration:0,exclusive:{},partners:{},ownBrand:null,badges:[],hype:0,hypeAt:Date.now(),newsDone:{},eventsDone:{}}); }
 function fresh(name, arch){
   const a=ARCHETYPES[arch];
   return {v:2,created:Date.now(),name,arch,attrs:{reach:a.reach,engagement:a.engagement,creativity:a.creativity,production:a.production,brandFit:a.brandFit},
-    credits:500,followers:0,xp:0,level:1,reputation:0,upgrades:[],job:null,contract:null,notifyAnswer:null,strategy:"balanced",kind:"story",log:[],answers:{}};
+    credits:500,followers:0,xp:0,level:1,reputation:0,upgrades:[],job:null,contract:null,notifyAnswer:null,strategy:"balanced",kind:"story",log:[],answers:{},
+    energy:100,energyAt:Date.now(),food:null,boostAt:0,callAt:0,inspiration:0,exclusive:{},partners:{},ownBrand:null,badges:[],hype:0,hypeAt:Date.now(),newsDone:{},eventsDone:{}};
 }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 function load(){ try{ const r=localStorage.getItem(KEY); return r?JSON.parse(r):null; }catch(e){ return null; } }
@@ -355,17 +447,32 @@ function rawScore(bf){ const a=S.attrs; return 0.25*a.reach+0.25*a.engagement+0.
 function followerRange(kind,strat){ const st=STRATS[strat],base=KINDS[kind].followers,mid=rawScore()+st.bonus+qualBonus();
   const lo=Math.max(0,mid-st.variance),hi=Math.min(100,mid+st.variance); return {lo:Math.round(base*(0.6+lo/100)),hi:Math.round(base*(0.6+hi/100))}; }
 const seededRand=seed=>{ const x=Math.sin(seed)*10000; return x-Math.floor(x); };
+function syncEnergy(){ const now=Date.now(); const regen=gameH(now-S.energyAt)*10; if(regen>0){ S.energy=Math.min(100,S.energy+regen); S.energyAt=now; }
+  if(S.hype>0){ S.hype=Math.max(0,S.hype-gameH(now-(S.hypeAt||now))*8); } S.hypeAt=now;
+  if(S.food&&now>=S.food.deliversAt){ S.energy=Math.min(100,S.energy+S.food.energy); log("food.delivered",{energy:S.food.energy}); S.food=null; toast("Essen ist da. +"+DAILY.food.energy+" Energie."); } }
+function cooldownLeft(at,mins){ return Math.max(0, at+realMs(mins)-Date.now()); }
+const mmss=ms=>{ const s=Math.ceil(ms/1000); return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0"); };
+const gameClock=ms=>{ const h=gameH(ms); return h>=1?h.toFixed(1).replace(".",",")+" h":Math.round(h*60)+" Min"; };
+function botFollowers(b,now){ const h=gameH(now-S.created); return Math.round(b.base+b.rate*h*(1+0.15*Math.sin(h/3+b.base))); }
+function ranking(){ const now=Date.now(); const rows=BOTS.map(b=>({name:b.name,niche:b.niche,lv:b.lv,f:botFollowers(b,now)})); rows.push({name:S.name,me:true,niche:S.arch,lv:S.level,f:S.followers}); rows.sort((a,b)=>b.f-a.f); return rows; }
+function myRank(){ return ranking().findIndex(r=>r.me)+1; }
+function exclusiveLock(c){ const ex=S.exclusive[c.cat]; if(ex&&ex.brand!==c.id&&Date.now()<ex.until) return {kind:"excl",brand:CONTRACTS.find(x=>x.id===ex.brand).brand,until:ex.until};
+  if(S.ownBrand&&S.ownBrand.cat===c.cat) return {kind:"own"}; return null; }
+function partnerMult(id){ return Math.min(1.6,1+0.15*(S.partners[id]||0)); }
+function ownBrandIncome(){ if(!S.ownBrand) return 0; const perH=Math.max(20,S.followers*0.03); return Math.floor(perH*gameH(Date.now()-S.ownBrand.lastClaimAt)); }
 
 /* ---------- Actions ---------- */
-function startProduction(kind,strat,contractId){
+function startProduction(kind,strat,contractId,eventId){
   const k=KINDS[kind];
+  if(eventId){ const e=EVENTS.find(x=>x.id===eventId); if(S.followers<e.minFollowers||S.level<e.minLevel) return fail(`Für ${e.title} brauchst du ${fmt(e.minFollowers)} Follower und Level ${e.minLevel}.`); if(S.eventsDone[eventId]) return fail("Du hast bei diesem Event schon ein Reel eingereicht."); }
   if(S.job) return fail("Dein Slot ist belegt. Warte, bis die Produktion fertig ist.");
   if(S.level<k.minLevel) return fail(`${k.name} gibt es ab Level ${k.minLevel}.`);
   if(S.credits<k.cost) return fail(`Dir fehlen ${fmt(k.cost-S.credits)} Credits.`);
+  syncEnergy(); if(S.energy<k.energy) return fail(`Zu wenig Energie (${Math.floor(S.energy)}/${k.energy}). Bestell was zu essen oder ruf einen Friend an.`);
   const dur=durationMin(kind),now=Date.now();
-  S.credits-=k.cost;
-  S.job={kind,strat,contractId:contractId||null,startedAt:now,completesAt:now+dur*60*1000/TIME_SCALE,seed:Math.floor(Math.random()*1e9),durMin:dur,claimed:false};
-  log("production.start",{kind,strat,contract:contractId||null,cost:k.cost,durationMin:dur});
+  S.credits-=k.cost; S.energy-=k.energy;
+  S.job={kind,strat,contractId:contractId||null,eventId:eventId||null,startedAt:now,completesAt:now+dur*60*1000/TIME_SCALE,seed:Math.floor(Math.random()*1e9),durMin:dur,claimed:false};
+  log("production.start",{kind,strat,contract:contractId||null,event:eventId||null,cost:k.cost,durationMin:dur});
   save(); toast(`${k.name} läuft. Du kannst die Seite jetzt schließen.`); renderAll(); show("studio");
 }
 function claim(){
@@ -374,15 +481,22 @@ function claim(){
   const c=j.contractId?CONTRACTS.find(x=>x.id===j.contractId):null;
   const bf=c?(c.niche===S.arch?Math.min(100,S.attrs.brandFit+25):S.attrs.brandFit-10):undefined;
   const variance=(seededRand(j.seed)*2-1)*st.variance;
-  const score=Math.max(0,Math.min(100,rawScore(bf)+st.bonus+qualBonus()+variance));
-  const followers=Math.round(k.followers*(0.6+score/100)); const xp=k.xp+(c?60:0);
+  const insp=S.inspiration||0; S.inspiration=0;
+  const score=Math.max(0,Math.min(100,rawScore(bf)+st.bonus+qualBonus()+variance+insp));
+  syncEnergy(); const hypeMult=1+(S.hype||0)/100; const followers=Math.round(k.followers*(0.6+score/100)*hypeMult); const xp=k.xp+(c?60:0)+(j.eventId?80:0);
+  const ev=j.eventId?EVENTS.find(x=>x.id===j.eventId):null;
   let credits=Math.round(k.credits*(0.7+score/100*0.6));
-  let note=`Strategie ${st.name}: ${variance>=0?"+":""}${variance.toFixed(1)} Zufall. Qualität +${qualBonus()} durch Studio.`;
-  if(c){ if(score>=55){ credits+=c.reward; S.reputation+=c.rep; note+=` Vertrag ${c.brand} erfüllt: +${c.reward} Cr, +${c.rep} Reputation.`; }
+  let note=`Strategie ${st.name}: ${variance>=0?"+":""}${variance.toFixed(1)} Zufall. Qualität +${qualBonus()} durch Studio.${insp?` Inspiration +${insp} vom Call.`:""}`;
+  if(c){ if(score>=55){ const gage=Math.round(c.reward*partnerMult(c.id)); credits+=gage; S.reputation+=c.rep; S.partners[c.id]=(S.partners[c.id]||0)+1;
+      S.exclusive[c.cat]={brand:c.id,until:Date.now()+realMs(EXCLUSIVE_HOURS*60)};
+      note+=` Vertrag ${c.brand} erfüllt: +${gage} Cr, +${c.rep} Reputation. Partner-Level ${S.partners[c.id]}. Du bist jetzt ${EXCLUSIVE_HOURS} h exklusiv in ${CATS[c.cat].name}.`; }
     else { S.reputation=Math.max(0,S.reputation-5); note+=` Vertrag ${c.brand} verfehlt (Score unter 55): kein Bonus, −5 Reputation.`; } S.contract=null; }
+  if(hypeMult>1) note+=` Hype ×${hypeMult.toFixed(2)} auf Follower.`;
+  if(ev){ S.eventsDone[ev.id]=true; if(score>=EVENT_THRESHOLD){ credits+=ev.reward; S.reputation+=ev.rep; S.hype=Math.min(100,(S.hype||0)+ev.hype); S.badges.push(ev.id); note+=` Event ${ev.title}: Top-Platzierung! +${ev.reward} Cr, +${ev.rep} Reputation, +${ev.hype} Hype, Abzeichen.`; }
+    else { S.reputation=Math.max(0,S.reputation-3); note+=` Event ${ev.title}: Score unter ${EVENT_THRESHOLD}, keine Platzierung. −3 Reputation.`; } }
   S.followers+=followers; S.credits+=credits; S.xp+=xp;
   let lvl=S.level; while(S.xp>=xpFor(lvl)) lvl++; const levelUp=lvl>S.level; S.level=lvl; S.job=null;
-  log("production.claim",{kind:j.kind,score:Math.round(score),followers,xp,credits,levelUp:levelUp?lvl:null});
+  log("production.claim",{kind:j.kind,event:j.eventId||null,score:Math.round(score),followers,xp,credits,levelUp:levelUp?lvl:null});
   save(); renderAll(); showResult(k.name,score,followers,xp,credits,note+(levelUp?` Level ${lvl} erreicht!`:""));
 }
 function buyUpgrade(u){
@@ -393,15 +507,44 @@ function buyUpgrade(u){
 }
 function acceptContract(c){
   if(S.contract) return fail("Du hast schon einen aktiven Vertrag.");
+  const lock=exclusiveLock(c); if(lock) return fail(lock.kind==="own"?`Du hast eine eigene Brand in ${CATS[c.cat].name}. Konkurrenz nimmt dich nicht.`:`Gesperrt: Du bist exklusiv mit ${lock.brand}.`);
   if(S.followers<c.minFollowers||S.level<c.minLevel) return fail("Voraussetzungen nicht erfüllt.");
   S.contract=c.id; S.kind="reel"; log("contract.accept",{id:c.id}); save(); renderAll();
   toast(`Vertrag mit ${c.brand} angenommen. Produziere jetzt ein Reel.`); show("content");
 }
 function fail(msg){ log("action.blocked",{msg}); toast(msg); }
+function doDaily(key){
+  const d=DAILY[key]; syncEnergy();
+  if(key==="food"){ if(S.food) return fail("Essen ist schon unterwegs."); if(S.credits<d.cost) return fail(`Dir fehlen ${fmt(d.cost-S.credits)} Credits.`);
+    S.credits-=d.cost; S.food={deliversAt:Date.now()+realMs(d.delayMin),energy:d.energy}; log("daily.food",{cost:d.cost}); toast("Bestellt. Lieferung in 20 Minuten Spielzeit."); }
+  if(key==="boost"){ const left=cooldownLeft(S.boostAt,d.cooldownMin); if(left) return fail(`Booster erst wieder in ${gameClock(left)}.`); if(S.credits<d.cost) return fail(`Dir fehlen ${fmt(d.cost-S.credits)} Credits.`);
+    S.credits-=d.cost; S.energy=Math.min(100,S.energy+d.energy); S.boostAt=Date.now(); log("daily.boost",{cost:d.cost}); toast("+50 Energie. Das Herz rast ein bisschen."); }
+  if(key==="call"){ const left=cooldownLeft(S.callAt,d.cooldownMin); if(left) return fail(`Deine Friends sind beschäftigt. Nächster Call in ${gameClock(left)}.`);
+    const f=FRIENDS[Math.floor(Math.random()*FRIENDS.length)]; S.energy=Math.min(100,S.energy+d.energy); S.inspiration=d.inspire; S.callAt=Date.now(); log("daily.call",{friend:f[0]}); toast(`${f[0]}: ${f[1]}`); }
+  save(); renderAll();
+}
+function foundBrand(name,cat){
+  if(S.ownBrand) return; if(S.level<OWN_BRAND.minLevel||S.reputation<OWN_BRAND.minRep) return fail(`Ab Level ${OWN_BRAND.minLevel} und ${OWN_BRAND.minRep} Reputation.`);
+  if(S.credits<OWN_BRAND.cost) return fail(`Dir fehlen ${fmt(OWN_BRAND.cost-S.credits)} Credits.`); if(!name) return fail("Gib deiner Brand einen Namen.");
+  S.credits-=OWN_BRAND.cost; S.ownBrand={name,cat,foundedAt:Date.now(),lastClaimAt:Date.now()}; if(S.contract&&CONTRACTS.find(c=>c.id===S.contract).cat===cat) S.contract=null;
+  log("brand.found",{name,cat}); save(); renderAll(); toast(`${name} ist gegründet. Einnahmen laufen ab jetzt.`);
+}
+function activeNews(){ const h=gameH(Date.now()-S.created); return NEWS.filter(n=>n.atHour<=h && h<n.atHour+NEWS_TTL_H && (n.niche==="all"||n.niche===S.arch) ); }
+function newsAct(n,mode){
+  if(S.newsDone[n.id]) return; let res;
+  if(mode==="react"){ const win=Math.random()<n.react.p; res=win?{text:n.react.win,f:n.react.f,rep:+Math.ceil(n.react.f/100),hype:20}:{text:n.react.lose,f:Math.round(n.react.f*0.1),rep:n.react.rep,hype:0}; }
+  else if(mode==="calm"){ res={text:n.calm.text,f:n.calm.f,rep:n.calm.rep,hype:6}; }
+  else res={text:"Du lässt die Meldung liegen. Manchmal die beste Entscheidung.",f:0,rep:0,hype:0};
+  syncEnergy(); S.followers+=res.f; S.reputation=Math.max(0,S.reputation+res.rep); S.hype=Math.min(100,(S.hype||0)+res.hype); S.newsDone[n.id]={mode,...res,t:Date.now()};
+  log("news."+mode,{id:n.id,followers:res.f,rep:res.rep}); save(); renderAll();
+  toast(`${res.text} ${res.f?`+${fmt(res.f)} Follower.`:""} ${res.rep?`Reputation ${res.rep>0?"+":""}${res.rep}.`:""}`);
+}
+function enterEvent(e){ S.kind="reel"; S.pendingEvent=e.id; save(); renderContent(); show("content"); toast(`Event-Reel für ${e.title}. Wähle deine Strategie und starte.`); }
+function claimBrandIncome(){ const inc=ownBrandIncome(); if(inc<1) return toast("Noch nichts zum Abholen."); S.credits+=inc; S.ownBrand.lastClaimAt=Date.now(); log("brand.income",{credits:inc}); save(); renderAll(); toast(`+${fmt(inc)} Credits aus ${S.ownBrand.name}.`); }
 
 /* ---------- Render ---------- */
 function renderTop(){
-  $("#rCredits").textContent=fmt(S.credits); $("#rFollowers").textContent=fmt(S.followers); $("#rLevel").textContent="Lv "+S.level;
+  syncEnergy(); $("#rCredits").textContent=fmt(S.credits); $("#rFollowers").textContent=fmt(S.followers); $("#rLevel").textContent="Lv "+S.level; $("#rEnergy").textContent=Math.floor(S.energy);
   const prev=S.level>1?xpFor(S.level-1):0,next=xpFor(S.level); $("#xpFill").style.width=Math.min(100,100*(S.xp-prev)/(next-prev))+"%";
 }
 const BARS={reach:["📶",'var(--blue)'],engagement:["💬",'var(--pink)'],creativity:["✨",'var(--gold)'],production:["🛠️",'var(--green)'],brandFit:["🤝",'var(--accent)'],reputation:["🏅",'var(--red)']};
@@ -410,7 +553,52 @@ function renderStudio(){
   $("#creatorName").textContent=S.name; $("#creatorNiche").textContent=ARCHETYPES[S.arch].em+" "+ARCHETYPES[S.arch].name+" · "+ARCHETYPES[S.arch].trait;
   const vals={...S.attrs,reputation:S.reputation};
   $("#attrs").innerHTML=Object.keys(BARS).map(k=>`<div class="stat"><span class="ic" style="background:${BARS[k][1]}22">${BARS[k][0]}</span><span>${NAMES[k]}</span><b class="mono">${vals[k]}</b><div class="bar"><i style="width:${vals[k]}%;background:${BARS[k][1]}"></i></div></div>`).join("");
-  drawScene(); renderQueue(); renderUpgrades();
+  drawScene(); renderQueue(); renderDaily(); renderUpgrades();
+}
+function renderDaily(){
+  const now=Date.now(); const foodLeft=S.food?Math.max(0,S.food.deliversAt-now):0; const bLeft=cooldownLeft(S.boostAt,DAILY.boost.cooldownMin), cLeft=cooldownLeft(S.callAt,DAILY.call.cooldownMin);
+  const rank=myRank();
+  $("#dailyCard").innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span class="label">Alltag · Energie</span><span class="pill ${rank<=3?"good":""}">🏆 Platz ${rank} von ${BOTS.length+1}</span></div>
+    <div><div style="display:flex;justify-content:space-between;font-weight:800;font-size:.9rem"><span>⚡ Energie</span><b class="mono">${Math.floor(S.energy)} / 100</b></div><div class="ebar" style="margin-top:6px"><i style="width:${S.energy}%"></i></div>
+    <p class="muted" style="font-size:.78rem;font-weight:700;margin-top:6px">Regeneriert 10 pro Spielstunde. Story kostet 10, Reel 25, Livestream 35, Longform 50.${S.inspiration?` Inspiration +${S.inspiration} wartet auf die nächste Produktion.`:""}${S.hype>1?` 🔥 Hype ${Math.round(S.hype)}: +${Math.round(S.hype)} % Follower auf die nächste Produktion, klingt ab.`:""}</p></div>
+    <div class="tiles three">
+      <button class="tile c1" data-daily="food" ${S.food?"disabled":""}><span class="em">${DAILY.food.em}</span><span class="t">${DAILY.food.name}</span><span class="s">${DAILY.food.desc}</span><span class="btnline"><span class="r">$ ${DAILY.food.cost}</span><span class="cool">${S.food?"Kommt in "+mmss(foodLeft):""}</span></span></button>
+      <button class="tile c3" data-daily="boost" ${bLeft?"disabled":""}><span class="em">${DAILY.boost.em}</span><span class="t">${DAILY.boost.name}</span><span class="s">${DAILY.boost.desc}</span><span class="btnline"><span class="r">$ ${DAILY.boost.cost}</span><span class="cool">${bLeft?"in "+mmss(bLeft):""}</span></span></button>
+      <button class="tile c4" data-daily="call" ${cLeft?"disabled":""}><span class="em">${DAILY.call.em}</span><span class="t">${DAILY.call.name}</span><span class="s">${DAILY.call.desc}</span><span class="btnline"><span class="r">kostenlos</span><span class="cool">${cLeft?"in "+mmss(cLeft):""}</span></span></button>
+    </div>`;
+  $("#dailyCard").querySelectorAll("[data-daily]").forEach(b=>b.onclick=()=>doDaily(b.dataset.daily));
+}
+function renderEvents(){
+  const el=$("#events"); if(!el) return;
+  el.innerHTML=EVENTS.map(e=>{ const okF=S.followers>=e.minFollowers,okL=S.level>=e.minLevel,done=S.eventsDone[e.id],badge=S.badges.includes(e.id),fit=e.niche===S.arch;
+    return `<div class="card" style="${done?"opacity:.75":""}">
+      <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center"><h3>${e.title}</h3>${badge?`<span class="pill good">🏅 Abzeichen</span>`:done?`<span class="pill">Eingereicht</span>`:`<span class="pill ${fit?"good":"warn"}">${fit?"Deine Nische":"Fremde Nische"}</span>`}</div>
+      <div class="tile ${e.tile}" style="padding:12px 14px"><span class="t">${CATS[e.cat].em} ${e.when}</span><span class="s">Beispiel-Eventkarte · unabhängige Spiel-Mission · Quelle und Prüfung im Spiel verpflichtend</span><span class="s" style="color:var(--ink)">${e.brief}</span></div>
+      <div class="grid2">
+        <div class="stat"><span class="ic" style="background:#ffc62b33">$</span><span>Gage</span><b class="mono">+${fmt(e.reward)}</b></div>
+        <div class="stat"><span class="ic" style="background:#e8453c22">🏅</span><span>Reputation</span><b class="mono">+${e.rep}</b></div>
+        <div class="stat"><span class="ic" style="background:#ff8a3d33">🔥</span><span>Hype</span><b class="mono">+${e.hype}</b></div>
+        <div class="stat"><span class="ic" style="background:#2f7cf622">★</span><span>Level ab</span><b class="mono" style="color:${okL?"#15713a":"#a3121c"}">${e.minLevel}</b></div>
+      </div>
+      <div class="stat"><span class="ic" style="background:#ee4fb022">♥</span><span>Follower ab</span><b class="mono" style="color:${okF?"#15713a":"#a3121c"}">${fmt(S.followers)} / ${fmt(e.minFollowers)}</b><div class="bar"><i style="width:${Math.min(100,100*S.followers/e.minFollowers)}%;background:var(--pink)"></i></div></div>
+      <p class="muted" style="font-size:.78rem;font-weight:700">Platzierung ab Score ${EVENT_THRESHOLD}. Sonst −3 Reputation. Ein Versuch pro Event.</p>
+      <button class="btn ${okF&&okL&&!done?"":"sec"}" data-e="${e.id}" ${done||!okF||!okL?"disabled":""}>${done?"Erledigt":okF&&okL?"Event-Reel planen":"Noch nicht freigeschaltet"}</button></div>`; }).join("");
+  el.querySelectorAll("button[data-e]").forEach(b=>b.onclick=()=>enterEvent(EVENTS.find(e=>e.id===b.dataset.e)));
+}
+function renderNews(){
+  const el=$("#news"); if(!el) return; const list=activeNews(); const h=gameH(Date.now()-S.created); const next=NEWS.find(n=>n.atHour>h&&(n.niche==="all"||n.niche===S.arch));
+  if(!list.length){ el.innerHTML=`<p class="muted" style="font-weight:700">Gerade nichts Neues.${next?` Nächste Meldung in ${gameClock(realMs((next.atHour-h)*60))}.`:""}</p>`; return; }
+  el.innerHTML=list.map(n=>{ const d=S.newsDone[n.id]; const left=realMs((n.atHour+NEWS_TTL_H-h)*60);
+    return `<div class="tile ${d?"":"c1"}" style="padding:14px;cursor:default" tabindex="-1">
+      <span class="s">${CATS[n.cat].em} ${CATS[n.cat].name} · ${d?"erledigt":"verfällt in "+gameClock(left)}</span><span class="t">${n.head}</span><span class="s" style="color:var(--ink)">${n.body}</span>
+      ${d?`<span class="s" style="color:var(--ink);margin-top:6px">${d.mode==="react"?"📣":d.mode==="calm"?"🧭":"🤫"} ${d.text} ${d.f?`+${fmt(d.f)} Follower.`:""} ${d.rep?`Reputation ${d.rep>0?"+":""}${d.rep}.`:""}</span>`:
+      `<div class="seg" style="width:100%;margin-top:8px"><button data-n="${n.id}" data-m="react">📣 Reagieren<br><small>${Math.round(n.react.p*100)} % Chance · bis +${fmt(n.react.f)} · Risiko ${n.react.rep} Rep</small></button><button data-n="${n.id}" data-m="calm">🧭 Einordnen<br><small>sicher · +${fmt(n.calm.f)} · +${n.calm.rep} Rep</small></button><button data-n="${n.id}" data-m="skip">🤫 Lassen</button></div>`}</div>`; }).join("");
+  el.querySelectorAll("button[data-n]").forEach(b=>b.onclick=()=>newsAct(NEWS.find(n=>n.id===b.dataset.n),b.dataset.m));
+}
+function renderRank(){
+  renderEvents(); renderNews();
+  const rows=ranking(); const el=$("#lb"); if(!el) return;
+  el.innerHTML=rows.map((r,i)=>`<div class="lbrow ${r.me?"me":""}"><span class="rank">${i<3?["🥇","🥈","🥉"][i]:i+1}</span><span class="nm">${r.me?"Du · ":""}${r.name}<small>${ARCHETYPES[r.niche].em} ${ARCHETYPES[r.niche].name} · Lv ${r.lv}</small></span><span class="val">${fmt(r.f)}<small>Follower</small></span></div>`).join("");
 }
 function kindForHot(h){ return h.kind||null; }
 function drawScene(){
@@ -463,7 +651,11 @@ function tick(){
   const hb=$("#scene .hot.busy"); if(hb) hb.style.setProperty("--p",pct+"%");
   if(left===0&&!$("#btnClaim")){ renderQueue(); drawScene(); markBadge(); }
 }
-function markBadge(){ const b=document.querySelector('nav [data-view="studio"]'); if(S.job&&Date.now()>=S.job.completesAt){ if(!b.querySelector(".badge")) b.insertAdjacentHTML("beforeend",'<span class="badge"></span>'); } else b.querySelector(".badge")?.remove(); }
+function slowTick(){ if(!S) return; const hadFood=!!S.food; syncEnergy(); $("#rEnergy").textContent=Math.floor(S.energy);
+  if(!$("#v-studio").hidden) renderDaily(); if(!$("#v-rank").hidden) renderRank(); markWorld(); if(!$("#v-contracts").hidden&&(S.ownBrand||Object.keys(S.exclusive).length)&&!$("#ownBrandCard").contains(document.activeElement)&&!($("#brandName")&&$("#brandName").value)) renderContracts();
+  if(hadFood&&!S.food) save(); }
+function markWorld(){ const b=document.querySelector('nav [data-view="rank"]'); const open=activeNews().some(n=>!S.newsDone[n.id]); if(open){ if(!b.querySelector(".badge")) b.insertAdjacentHTML("beforeend",'<span class="badge"></span>'); } else b.querySelector(".badge")?.remove(); }
+function markBadge(){ markWorld(); const b=document.querySelector('nav [data-view="studio"]'); if(S.job&&Date.now()>=S.job.completesAt){ if(!b.querySelector(".badge")) b.insertAdjacentHTML("beforeend",'<span class="badge"></span>'); } else b.querySelector(".badge")?.remove(); }
 function renderUpgrades(){
   const next=UPGRADES.find(u=>!S.upgrades.includes(u.key)); const u=$("#upgradeCard");
   if(!next){ u.innerHTML=`<span class="label">Studio-Ausbau</span><h3>Professional erreicht</h3><p class="muted" style="font-weight:700">Im Prototyp endet der Ausbau hier. Im Spiel folgen Agentur-HQ und Empire mit eigenem Creator-Roster.</p>`; return; }
@@ -474,7 +666,7 @@ function renderUpgrades(){
 }
 function renderContent(){
   $("#kinds").innerHTML=Object.entries(KINDS).filter(([k])=>k!=="free").map(([k,v])=>{ const locked=S.level<v.minLevel;
-    return `<button class="tile ${v.tile} ${locked?"locked":""}" data-kind="${k}" aria-pressed="${S.kind===k}"><span class="em">${v.em}</span><span class="t">${v.name}</span><span class="r">$ ${v.cost}</span><span class="s">${v.base>=60?v.base/60+" h":v.base+" Min"} · ${v.xp} XP · ~${fmt(v.followers)} Follower${locked?` · ab Lv ${v.minLevel}`:""}</span></button>`; }).join("");
+    return `<button class="tile ${v.tile} ${locked?"locked":""}" data-kind="${k}" aria-pressed="${S.kind===k}"><span class="em">${v.em}</span><span class="t">${v.name}</span><span class="r">$ ${v.cost}</span><span class="s">${v.base>=60?v.base/60+" h":v.base+" Min"} · ⚡${v.energy} · ${v.xp} XP · ~${fmt(v.followers)} Follower${locked?` · ab Lv ${v.minLevel}`:""}</span></button>`; }).join("");
   $("#kinds").querySelectorAll(".tile").forEach(b=>b.onclick=()=>{ if(b.classList.contains("locked")) return fail(`Ab Level ${KINDS[b.dataset.kind].minLevel}.`); S.kind=b.dataset.kind; save(); renderContent(); });
   $("#strategies").innerHTML=Object.entries(STRATS).map(([k,v])=>`<button data-strat="${k}" aria-pressed="${S.strategy===k}">${v.name}</button>`).join("");
   $("#strategies").querySelectorAll("button").forEach(b=>b.onclick=()=>{ S.strategy=b.dataset.strat; save(); renderContent(); });
@@ -483,26 +675,47 @@ function renderContent(){
   $("#fDur").textContent=dur>=60?(dur/60).toFixed(1).replace(".",",")+" h":dur+" Min"; $("#fCost").textContent="$ "+k.cost; $("#fXp").textContent="+"+k.xp;
   $("#fFollow").textContent=`+${fmt(r.lo)} bis +${fmt(r.hi)}`;
   const minF=k.followers*0.6,maxF=k.followers*1.6; $("#fBand").style.left=(100*(r.lo-minF)/(maxF-minF))+"%"; $("#fBand").style.right=(100-100*(r.hi-minF)/(maxF-minF))+"%";
-  const c=S.contract?CONTRACTS.find(x=>x.id===S.contract):null; const btn=$("#btnProduce"); let why="";
-  if(S.job) why="Slot belegt. Warte auf die laufende Produktion."; else if(S.credits<k.cost) why=`Dir fehlen ${fmt(k.cost-S.credits)} Credits.`; else if(c&&S.kind!=="reel") why=`Vertrag mit ${c.brand} verlangt ein Reel.`;
-  btn.disabled=!!why; btn.textContent=c&&S.kind==="reel"?`Reel für ${c.brand} starten`:`${k.name} starten`; $("#produceWhy").textContent=why;
-  btn.onclick=()=>startProduction(S.kind,S.strategy,c&&S.kind==="reel"?c.id:null);
+  const c=S.contract?CONTRACTS.find(x=>x.id===S.contract):null; const pe=S.pendingEvent?EVENTS.find(x=>x.id===S.pendingEvent):null; const btn=$("#btnProduce"); let why="";
+  syncEnergy(); if(S.job) why="Slot belegt. Warte auf die laufende Produktion."; else if(S.credits<k.cost) why=`Dir fehlen ${fmt(k.cost-S.credits)} Credits.`; else if(S.energy<k.energy) why=`Zu wenig Energie (${Math.floor(S.energy)}/${k.energy}). Essen, Booster oder Call im Studio.`; else if(c&&S.kind!=="reel") why=`Vertrag mit ${c.brand} verlangt ein Reel.`;
+  if(!why&&pe&&S.kind!=="reel") why=`Event ${pe.title} verlangt ein Reel.`;
+  btn.disabled=!!why; btn.textContent=pe&&S.kind==="reel"?`Event-Reel: ${pe.title}`:c&&S.kind==="reel"?`Reel für ${c.brand} starten`:`${k.name} starten`; $("#produceWhy").textContent=why||(pe?"Event-Modus aktiv. Abbrechen über den Tab Welt.":"");
+  btn.onclick=()=>{ const evId=pe&&S.kind==="reel"?pe.id:null; S.pendingEvent=null; startProduction(S.kind,S.strategy,!evId&&c&&S.kind==="reel"?c.id:null,evId); };
 }
 function renderContracts(){
-  $("#contracts").innerHTML=CONTRACTS.map(c=>{ const okF=S.followers>=c.minFollowers,okL=S.level>=c.minLevel,active=S.contract===c.id,fit=c.niche===S.arch;
-    return `<div class="card" style="border:3px solid ${active?"var(--accent)":"transparent"}">
+  const now=Date.now(); const ex=Object.entries(S.exclusive).filter(([,e])=>e.until>now);
+  $("#exclusiveInfo").innerHTML = ex.length?ex.map(([cat,e])=>`<span class="pill acc" style="margin:2px 6px 2px 0">${CATS[cat].em} Exklusiv mit ${CONTRACTS.find(c=>c.id===e.brand).brand} · noch ${gameClock(e.until-now)}</span>`).join(""):"";
+  $("#contracts").innerHTML=CONTRACTS.map(c=>{ const okF=S.followers>=c.minFollowers,okL=S.level>=c.minLevel,active=S.contract===c.id,fit=c.niche===S.arch,lock=exclusiveLock(c),pl=S.partners[c.id]||0,gage=Math.round(c.reward*partnerMult(c.id));
+    return `<div class="card" style="border:3px solid ${active?"var(--accent)":"transparent"};${lock?"opacity:.6":""}">
       <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center"><h3>${c.title}</h3><span class="pill ${fit?"good":"warn"}">${fit?"Passt zu deiner Nische":"Fremde Nische"}</span></div>
-      <div class="tile ${c.tile}" style="padding:10px 12px"><span class="t">${c.brand}</span><span class="s">fiktive Marke · ${ARCHETYPES[c.niche].em} ${ARCHETYPES[c.niche].name}</span><span class="s" style="color:var(--ink)">${c.brief}</span></div>
-      <div class="stat"><span class="ic" style="background:#ffc62b33">$</span><span>Belohnung</span><b class="mono">+${fmt(c.reward)}</b></div>
+      <div class="tile ${c.tile}" style="padding:12px 14px"><span class="t">${c.brand}</span><span class="s">${c.real?"reale Marke, nur Beispiel":"fiktive Marke"} · ${CATS[c.cat].em} ${CATS[c.cat].name} · ${ARCHETYPES[c.niche].em} ${ARCHETYPES[c.niche].name}${pl?` · Partner-Level ${pl}`:""}</span><span class="s" style="color:var(--ink)">${c.brief}</span></div>
+      ${lock?`<span class="pill bad">${lock.kind==="own"?`Gesperrt: eigene Brand in ${CATS[c.cat].name}`:`Gesperrt: exklusiv mit ${lock.brand} · noch ${gameClock(lock.until-now)}`}</span>`:""}
+      <div class="stat"><span class="ic" style="background:#ffc62b33">$</span><span>Gage${pl?` (×${partnerMult(c.id).toFixed(2)})`:""}</span><b class="mono">+${fmt(gage)}</b></div>
       <div class="stat"><span class="ic" style="background:#e8453c22">🏅</span><span>Reputation</span><b class="mono">+${c.rep}</b></div>
       <div class="stat"><span class="ic" style="background:#ee4fb022">♥</span><span>Follower ab</span><b class="mono" style="color:${okF?"#15713a":"#a3121c"}">${fmt(c.minFollowers)}</b><div class="bar"><i style="width:${Math.min(100,100*S.followers/c.minFollowers)}%;background:var(--pink)"></i></div></div>
       <div class="stat"><span class="ic" style="background:#2f7cf622">★</span><span>Level ab</span><b class="mono" style="color:${okL?"#15713a":"#a3121c"}">${c.minLevel}</b><div class="bar"><i style="width:${Math.min(100,100*S.level/c.minLevel)}%;background:var(--blue)"></i></div></div>
       <p class="muted" style="font-size:.78rem;font-weight:700">Risiko ${c.risk}. Erfüllt ab Score 55. ${fit?"Nischen-Bonus +25 Brand Fit.":"Nischen-Malus −10 Brand Fit."}</p>
-      <button class="btn ${okF&&okL&&!S.contract?"":"sec"}" data-c="${c.id}" ${active?"disabled":""}>${active?"Aktiv: produziere ein Reel":"Vertrag annehmen"}</button></div>`; }).join("");
+      <button class="btn ${okF&&okL&&!S.contract&&!lock?"":"sec"}" data-c="${c.id}" ${active||lock?"disabled":""}>${active?"Aktiv: produziere ein Reel":lock?"Gesperrt":"Vertrag annehmen"}</button></div>`; }).join("");
   $("#contracts").querySelectorAll("button[data-c]").forEach(b=>b.onclick=()=>acceptContract(CONTRACTS.find(c=>c.id===b.dataset.c)));
+  renderOwnBrand();
+}
+function renderOwnBrand(){
+  const el=$("#ownBrandCard"); if(S.ownBrand){ const b=S.ownBrand, inc=ownBrandIncome(), perH=Math.max(20,S.followers*0.03);
+    el.innerHTML=`<span class="label">Eigene Brand</span><h3>${CATS[b.cat].em} ${b.name}</h3><p class="muted" style="font-weight:700">Kategorie ${CATS[b.cat].name}. Einnahmen hängen an deinen Followern: aktuell ${fmt(perH)} Credits pro Spielstunde. Verträge mit Konkurrenten in ${CATS[b.cat].name} sind für dich gesperrt.</p>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><b class="mono" style="font-size:1.3rem">$ ${fmt(inc)} bereit</b><button class="btn green" id="btnBrandIncome">Einnahmen abholen</button></div>`;
+    $("#btnBrandIncome").onclick=claimBrandIncome; return; }
+  const ok=S.level>=OWN_BRAND.minLevel&&S.reputation>=OWN_BRAND.minRep;
+  el.innerHTML=`<span class="label">Eigene Brand · ab Level ${OWN_BRAND.minLevel} und ${OWN_BRAND.minRep} Reputation</span><h3>Vom Creator zur Marke</h3>
+    <p class="muted" style="font-weight:700">Gründe deine eigene Brand für $ ${fmt(OWN_BRAND.cost)}. Sie zahlt dir laufend Credits, abhängig von deinen Followern. Dafür bist du für Konkurrenz-Brands der Kategorie nicht mehr buchbar.</p>
+    <div class="stat"><span class="ic" style="background:#2f7cf622">★</span><span>Level</span><b class="mono" style="color:${S.level>=OWN_BRAND.minLevel?"#15713a":"#a3121c"}">${S.level} / ${OWN_BRAND.minLevel}</b><div class="bar"><i style="width:${Math.min(100,100*S.level/OWN_BRAND.minLevel)}%;background:var(--blue)"></i></div></div>
+    <div class="stat"><span class="ic" style="background:#e8453c22">🏅</span><span>Reputation</span><b class="mono" style="color:${S.reputation>=OWN_BRAND.minRep?"#15713a":"#a3121c"}">${S.reputation} / ${OWN_BRAND.minRep}</b><div class="bar"><i style="width:${Math.min(100,100*S.reputation/OWN_BRAND.minRep)}%;background:var(--red)"></i></div></div>
+    ${ok?`<label class="label" for="brandName">Name deiner Brand</label><input type="text" id="brandName" maxlength="24" placeholder="z. B. Lumi Labs" autocomplete="off">
+    <span class="label">Kategorie</span><div class="seg" id="brandCat">${Object.entries(CATS).map(([k,v],i)=>`<button data-cat="${k}" aria-pressed="${i===0}">${v.em} ${v.name}</button>`).join("")}</div>
+    <button class="btn block" id="btnFound">Brand gründen · $ ${fmt(OWN_BRAND.cost)}</button>`:`<button class="btn block sec" disabled>Noch gesperrt</button>`}`;
+  if(ok){ let cat="nutrition"; el.querySelectorAll("#brandCat button").forEach(b=>b.onclick=()=>{ cat=b.dataset.cat; el.querySelectorAll("#brandCat button").forEach(x=>x.setAttribute("aria-pressed",x===b)); });
+    $("#btnFound").onclick=()=>foundBrand($("#brandName").value.trim(),cat); }
 }
 function renderLog(){ const el=$("#log"); if(!el) return; el.textContent=S.log.map(l=>{ const {t,ev,...rest}=l; return `${t.slice(11,19)} ${ev} ${Object.keys(rest).length?JSON.stringify(rest):""}`; }).join("\n")||"Noch nichts passiert."; el.scrollTop=el.scrollHeight; }
-function renderAll(){ renderTop(); renderStudio(); renderContent(); renderContracts(); renderLog(); markBadge(); }
+function renderAll(){ renderTop(); renderStudio(); renderContent(); renderContracts(); renderRank(); renderLog(); markBadge(); }
 
 /* ---------- Result / FX ---------- */
 function showResult(kind,score,f,xp,cr,note){
@@ -551,5 +764,6 @@ Object.values(STAGES).forEach(s=>{ const i=new Image(); i.src=s.img; });
 if(S){ renderAll(); show("studio"); if(S.job&&Date.now()>=S.job.completesAt) toast("Deine Produktion ist fertig geworden, während du weg warst."); }
 else { document.querySelector("nav").hidden=true; show("onboard"); }
 setInterval(()=>{ if(S&&S.job) tick(); },500);
+setInterval(slowTick,1000);
 })();
 </script>

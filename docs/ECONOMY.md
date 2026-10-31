@@ -64,3 +64,36 @@ XP-Bedarf für Level n: `100 * n^1.5` (gerundet). Level 2 = 283 XP, Level 5 = 1.
 | Datum | Änderung | Grund | Test |
 |---|---|---|---|
 | 2026-10-31 | Startwerte aus GDD v1.0 übernommen, Deadlock-Schutz ergänzt | Erstfassung | offen |
+
+## Ergänzungen aus Prototyp v3 (31.10.2026, Vorschlag, nicht final)
+
+### Energie
+Max 100, Regeneration 10 pro Spielstunde. Kosten: Story 10, Reel 25, Livestream 35, Longform 50.
+
+| Aktion | Kosten | Wirkung | Taktung |
+|---|---:|---|---|
+| Essen bestellen | 60 Cr | +35 Energie nach 20 Min Lieferzeit | beliebig, eine Lieferung gleichzeitig |
+| Energy Booster | 90 Cr | +50 Energie sofort | alle 6 h |
+| Call mit Friend | 0 Cr | +10 Energie, +4 Inspiration (Score-Bonus auf nächste Produktion) | alle 8 h |
+
+### Hype
+Temporärer Wert 0–100, Zerfall 8 pro Spielstunde. Wirkt als Follower-Multiplikator `1 + hype/100` auf die nächste Produktion. Quellen: Events, News-Reaktionen.
+
+### Brands und Exklusivität
+- Verträge haben eine Kategorie (Nutrition, Fashion, Gaming-Hardware, Getränke).
+- Erfolgreicher Abschluss bindet den Spieler 24 Spielstunden exklusiv an die Brand. Konkurrenten derselben Kategorie sind gesperrt.
+- Partner-Level pro Brand: Gage × (1 + 0,15 × Abschlüsse), Deckel 1,6.
+- Eigene Brand ab Level 6 und 15 Reputation für 1.500 Cr: Einnahmen `max(20, Follower × 0,03)` Credits pro Spielstunde, abholbar. Sperrt alle Fremdverträge der eigenen Kategorie.
+- Reale Markennamen (More Nutrition, Teveo, 6PM) sind im Prototyp nur Platzhalter. Vor öffentlicher Nutzung Rechteklärung laut GDD Abschnitt 12.
+
+### Events
+Event-Reel mit Follower- und Level-Hürde, ein Versuch pro Event. Erfolg ab Score 60: Gage, Reputation, Hype, Abzeichen. Misserfolg: −3 Reputation.
+
+### Branchen-News
+Meldungen erscheinen gestaffelt nach Spielstunden, gefiltert nach Nische, verfallen nach 6 h. Drei Optionen:
+- Reagieren: Chance 45–60 %, Gewinn bis +900 Follower und +20 Hype, Risiko −4 bis −12 Reputation.
+- Einordnen: sicher, +120 bis +250 Follower, +2 bis +6 Reputation, +6 Hype.
+- Lassen: keine Wirkung.
+
+### Rangliste
+Wochen-Score = Follower. Im Prototyp 9 simulierte Spieler mit linearem Wachstum (90–300 Follower pro Spielstunde) plus leichter Schwankung. Belohnung nur kosmetisch plus Reputation.

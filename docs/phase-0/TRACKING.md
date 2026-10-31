@@ -7,7 +7,7 @@ und können den Loop erklären. Sonst Loop überarbeiten, kein Produktcode.
 
 | Paket | Status | Ergebnis / Ort |
 |---|---|---|
-| Klickprototyp | **fertig (v2, Renders + Hotspots)** | `prototype/index.html`, veröffentlicht: https://claude.ai/artifact/K6wMyGvMkDzzJK25nXi5cV |
+| Klickprototyp | **fertig (v3: Renders, Alltag, Brands, Events, News, Rangliste)** | `prototype/index.html`, veröffentlicht: https://claude.ai/artifact/K6wMyGvMkDzzJK25nXi5cV |
 | Interviewleitfaden | fertig | `docs/phase-0/INTERVIEW-LEITFADEN.md` |
 | Namenscheck Vorprüfung | fertig | `docs/phase-0/NAMENSCHECK.md`, Registerrecherche offen |
 | 10 Interviews | offen | Rekrutierung starten |
@@ -20,11 +20,11 @@ und können den Loop erklären. Sonst Loop überarbeiten, kein Produktcode.
 |---|---|---|
 | H1 Rückkehr für fertige Produktionen | Timer läuft weiter, wenn die Seite geschlossen wird (localStorage, Zeitstempel). Toast beim Wiederkommen. Frage „Benachrichtigen?" | notify.answer, Frage 1 |
 | H2 Sichtbare Studio-Metamorphose motiviert | Zwei Upgrades tauschen den kompletten Raum (Zimmer, Aufnahmestudio, Editing-Suite) und die Stationen darin | Beobachtung, Gesprächsfrage |
-| H3 Echte Brand-Events erhöhen Relevanz | Nur als Frage, Verträge sind fiktiv | Frage 4 |
-| H4 Asynchrones Spielen mit Freunden | **nicht im Prototyp** | Gesprächsfrage |
+| H3 Echte Brand-Events erhöhen Relevanz | Event Hub mit Beispiel-Eventkarten (FIBO, gamescom, Fashion Week), reale Markennamen als Platzhalter in Verträgen, Branchen-News mit Reaktion | Klicks auf Events/News im Log, Frage 4 |
+| H4 Asynchrones Spielen mit Freunden | Rangliste mit simulierten Mitspielern, Call mit Friend | Beobachtung, Gesprächsfrage |
 | H5 B2B-Mehrwert für Brands | **nicht in Phase 0** | später |
 
-Bewusst nicht im Prototyp: 3D, Server, Login, Social, Energie-System, Agentur.
+Bewusst nicht im Prototyp: 3D, Server, Login, echte Mitspieler, Agentur, Quellenprüfung der Eventkarten.
 
 ## Interviewprotokolle
 
