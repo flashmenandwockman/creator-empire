@@ -1,0 +1,66 @@
+# Spielökonomie: Startwerte und Änderungsregeln
+
+Alle Werte sind **Balancing-Startwerte**, keine validierten Zahlen. Jede Änderung wird hier
+mit Datum, Grund und Test eingetragen.
+
+## Startzustand
+
+| Größe | Wert |
+|---|---|
+| Creator | 1, frei benennbar, Nische wählbar |
+| Credits | 500 |
+| Produktionsslots | 1 |
+| Studio-Stufe | Bedroom (Lv 1) |
+| Energie | 100, Regeneration 10 pro Stunde (serverseitig berechnet) |
+
+## Content-Aktionen
+
+| Aktion | Dauer | Kosten | Creator-XP | Follower (Erwartung) | Ab Level |
+|---|---:|---:|---:|---:|---:|
+| Story | 30 Min | 40 | 30 | +90 | 1 |
+| Reel | 240 Min | 180 | 150 | +850 | 1 |
+| Livestream | 360 Min | 300 | 250 | +1.250 | 5 |
+| Longform-Video | 720 Min | 550 | 450 | +2.500 | 8 |
+
+**Deadlock-Schutz:** Fällt der Kontostand unter 40 Credits und läuft kein Job, steht eine
+kostenlose Aktion „Spontan-Story" (20 Min, 0 Credits, 15 XP, +40 Follower) bereit.
+Zusätzlich zahlen Story und Reel Credits aus (Story +60, Reel +260), damit der Loop sich
+selbst trägt. Ziel: Spieler darf nie ohne Handlungsoption sein.
+
+## Formeln
+
+```ts
+durationMinutes = max(10, round(baseMinutes * (1 - equipmentLevel * 0.06 - productionSkill * 0.015)))
+
+rawScore = 0.25*reach + 0.25*engagement + 0.20*creativity + 0.15*production + 0.15*brandFit
+finalScore = clamp(rawScore + strategyBonus + seededVariance, 0, 100)
+
+followers = round(baseFollowers * (0.6 + finalScore / 100))   // Spanne 0,6x bis 1,6x
+```
+
+- `seededVariance` liegt in [-8, +8], aus dem serverseitigen Job-Seed.
+- `strategyBonus`: safe +0 / balanced +3 / viral +6 mit Varianz-Spanne [-15, +15].
+- Boni sind additiv und gedeckelt. Keine ungedeckelten Multiplikatoren.
+- Der Spieler sieht vor dem Start eine Prognosebandbreite, nie einen garantierten Wert.
+
+## Level
+
+XP-Bedarf für Level n: `100 * n^1.5` (gerundet). Level 2 = 283 XP, Level 5 = 1.118 XP, Level 10 = 3.162 XP.
+
+## Studio-Upgrade (MVP: genau eines)
+
+| Upgrade | Kosten | Wirkung | Sichtbar |
+|---|---:|---|---|
+| Ringlicht + Kamera Lv 2 | 400 Credits | Dauer -6 %, Qualität +4 | Neues Kamera-Modell, Licht an |
+
+## Änderungsregeln
+
+1. Jede Änderung an Werten oder Formeln braucht einen aktualisierten Unit-Test in `lib/game-engine`.
+2. Werte liegen in einer versionierten Config-Tabelle oder Datei (`economy_version`), damit Jobs mit altem Snapshot korrekt ausgezahlt werden.
+3. Vor Änderung: Simulation über 7 Spieltage mit drei Spielertypen (1x, 3x, 6x täglich online) laufen lassen und Ergebnis hier anhängen.
+
+## Änderungslog
+
+| Datum | Änderung | Grund | Test |
+|---|---|---|---|
+| 2026-10-31 | Startwerte aus GDD v1.0 übernommen, Deadlock-Schutz ergänzt | Erstfassung | offen |
