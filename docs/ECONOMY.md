@@ -68,7 +68,7 @@ XP-Bedarf für Level n: `100 * n^1.5` (gerundet). Level 2 = 283 XP, Level 5 = 1.
 ## Ergänzungen aus Prototyp v3 (31.10.2026, Vorschlag, nicht final)
 
 ### Energie
-Max 100, Regeneration 10 pro Spielstunde. Kosten: Story 10, Reel 25, Livestream 35, Longform 50.
+Max 100, Start 60, Regeneration **3 pro Spielstunde** (72 pro Tag). Kosten: Story 10, Reel 25, Livestream 35, Longform 50, Classes 40–70. Drei Reels sind damit ein volles Tagespensum; Essen, Booster und Calls sind die bewusste Abkürzung.
 
 | Aktion | Kosten | Wirkung | Taktung |
 |---|---:|---|---|
@@ -97,3 +97,24 @@ Meldungen erscheinen gestaffelt nach Spielstunden, gefiltert nach Nische, verfal
 
 ### Rangliste
 Wochen-Score = Follower. Im Prototyp 9 simulierte Spieler mit linearem Wachstum (90–300 Follower pro Spielstunde) plus leichter Schwankung. Belohnung nur kosmetisch plus Reputation.
+
+### Academy / Classes
+Eine Class belegt den Produktionsslot (kein Content währenddessen) und kostet Credits und Energie. Danach steigen Attribute dauerhaft.
+
+| Class | Dauer | Kosten | Energie | Wirkung | Ab Level |
+|---|---:|---:|---:|---|---:|
+| Storytelling-Class | 3 h | 120 | 40 | +5 Engagement, +120 XP | 1 |
+| Kamera-Workshop | 3 h | 150 | 40 | +5 Production, +120 XP | 1 |
+| Brand-Academy | 6 h | 300 | 55 | +6 Brand Fit, +4 Reputation, +260 XP | 3 |
+| Creator Masterclass | 12 h | 600 | 70 | +5 Reach, +5 Creativity, +500 XP | 5 |
+
+### Collabs
+Collab-Reel: 180 Cr, 30 Energie, 4 h, belegt den Slot. Ergebnis hängt vom Größenverhältnis Partner/Spieler ab und wird vor der Anfrage mit Zahlen angezeigt.
+
+| Verhältnis | Du | Partner | Zusage |
+|---|---|---|---|
+| Partner < 0,5× | 50 % eines Reels | 200 % eines Reels | immer |
+| 0,5× bis 2× (Augenhöhe) | 100 % | 100 % | 85 % |
+| Partner > 2× | 220 % | verliert 2 % seiner Follower | 35 % + Reputation/100 |
+
+Absage: keine Kosten, 6 h Sperre bei diesem Creator. Follower-Änderungen der Partner wirken sichtbar auf die Rangliste.
