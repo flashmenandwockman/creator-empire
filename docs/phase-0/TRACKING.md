@@ -7,7 +7,7 @@ und können den Loop erklären. Sonst Loop überarbeiten, kein Produktcode.
 
 | Paket | Status | Ergebnis / Ort |
 |---|---|---|
-| Klickprototyp | **fertig (v1)** | `prototype/index.html`, veröffentlicht: https://claude.ai/artifact/K6wMyGvMkDzzJK25nXi5cV |
+| Klickprototyp | **fertig (v2, Renders + Hotspots)** | `prototype/index.html`, veröffentlicht: https://claude.ai/artifact/K6wMyGvMkDzzJK25nXi5cV |
 | Interviewleitfaden | fertig | `docs/phase-0/INTERVIEW-LEITFADEN.md` |
 | Namenscheck Vorprüfung | fertig | `docs/phase-0/NAMENSCHECK.md`, Registerrecherche offen |
 | 10 Interviews | offen | Rekrutierung starten |
@@ -19,7 +19,7 @@ und können den Loop erklären. Sonst Loop überarbeiten, kein Produktcode.
 | Hypothese (GDD 1.5) | Im Prototyp | Messung |
 |---|---|---|
 | H1 Rückkehr für fertige Produktionen | Timer läuft weiter, wenn die Seite geschlossen wird (localStorage, Zeitstempel). Toast beim Wiederkommen. Frage „Benachrichtigen?" | notify.answer, Frage 1 |
-| H2 Sichtbare Studio-Metamorphose motiviert | Zwei Upgrades verändern Szene (Licht, Kamera, Monitore, Avatar-Outfit) | Beobachtung, Gesprächsfrage |
+| H2 Sichtbare Studio-Metamorphose motiviert | Zwei Upgrades tauschen den kompletten Raum (Zimmer, Aufnahmestudio, Editing-Suite) und die Stationen darin | Beobachtung, Gesprächsfrage |
 | H3 Echte Brand-Events erhöhen Relevanz | Nur als Frage, Verträge sind fiktiv | Frage 4 |
 | H4 Asynchrones Spielen mit Freunden | **nicht im Prototyp** | Gesprächsfrage |
 | H5 B2B-Mehrwert für Brands | **nicht in Phase 0** | später |
@@ -56,4 +56,4 @@ Bewusst nicht im Prototyp: 3D, Server, Login, Social, Energie-System, Agentur.
 - Zeitskala 4 h = 45 s. Das Warten selbst wird nicht erlebt, nur im Gespräch abgefragt.
 - Kein echter Zufall-Seed vom Server, aber deterministisch pro Job (gleiches Prinzip).
 - Zustand nur im Browser des Testers. Protokoll muss per „Kopieren" gesichert werden.
-- Studio als stilisierte 2D-Isometrie in SVG, kein 3D. Das ist Absicht (siehe Strategie 4.2).
+- Studio als drei isometrische Konzept-Renders (Bedroom, Rising Studio, Professional) mit tippbaren Hotspots, kein 3D. Das ist Absicht (siehe Strategie 4.2). UI-Referenz: `docs/phase-0/ref-ui-cards.webp`.
